@@ -20,10 +20,10 @@ import tungnt.util.DBHelper;
  * @author Thanh Tung
  */
 public class RegistrationDAO implements Serializable {
-
+    
     public RegistrationDTO checkLogin(String username, String password)
             throws SQLException, NamingException, ClassNotFoundException { //bat loi con.close();
-
+        
         Connection con = null;//khai bao
         PreparedStatement stm = null;
         ResultSet rs = null;

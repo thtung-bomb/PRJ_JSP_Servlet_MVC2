@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
         String url = INVALID_PAGE;
-
+        
         try {
             //ghi o phia client                 
             //2. call DAO

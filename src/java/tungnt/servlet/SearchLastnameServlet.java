@@ -17,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import tungnt.registration.RegistrationDAO;
 import tungnt.registration.RegistrationDTO;
 
@@ -29,7 +30,7 @@ public class SearchLastnameServlet extends HttpServlet {
 
 //    private final String SEARCH_PAGE = "search.html";
     private final String RESULT_SEARCH_PAGE = "search.jsp";
-//    private final String LOGIN_PAGE = "login.html";
+    private final String ERROR_PAGE = "errors.html";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,20 +49,25 @@ public class SearchLastnameServlet extends HttpServlet {
         String url = RESULT_SEARCH_PAGE;
         
         try {
-//            RegistrationDAO dao = new RegistrationDAO();
-            if (!searchValue.trim().isEmpty()) { //check xem chuoi rong hay khong
-                //2. Call DAO
-                //2.1 new DAO
-                RegistrationDAO registrationDAO = new RegistrationDAO();
-                //2.2 call method
-                registrationDAO.searchLastname(searchValue);
-                //3. process
-                List<RegistrationDTO> searchResult = registrationDAO.getAccounts(); //dang o controller -> view
-                //send result -> url
-                //use requestScope
-                url = RESULT_SEARCH_PAGE;
-                request.setAttribute("SEARCH_RESULT", searchResult);
-            } //end user typed valid value
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                RegistrationDTO userInfo = (RegistrationDTO) session.getAttribute("USER_INFOR");
+                if (userInfo != null && !searchValue.trim().isEmpty()) { //check xem chuoi rong hay khong
+                    //2. Call DAO
+                    //2.1 new DAO
+                    RegistrationDAO registrationDAO = new RegistrationDAO();
+                    //2.2 call method
+                    registrationDAO.searchLastname(searchValue);
+                    //3. process
+                    List<RegistrationDTO> searchResult = registrationDAO.getAccounts(); //dang o controller -> view
+                    //send result -> url
+                    //use requestScope
+                    url = RESULT_SEARCH_PAGE;
+                    request.setAttribute("SEARCH_RESULT", searchResult);
+                } //end user typed valid value 
+            } else {
+                url = ERROR_PAGE;
+            }
         } //end username and password are verified
         catch (SQLException ex) {
             ex.printStackTrace();
@@ -75,7 +81,7 @@ public class SearchLastnameServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
