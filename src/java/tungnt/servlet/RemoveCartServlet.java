@@ -40,7 +40,7 @@ public class RemoveCartServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 //2. Cust takes his/her cart
-                CartObject cart = (CartObject) session.getAttribute("cart");
+                CartObject cart = (CartObject) session.getAttribute("CART");
                 if (cart != null) {
                     //3. Cust gets items
                     Map<String, Integer> items = cart.getItems();
@@ -52,7 +52,7 @@ public class RemoveCartServlet extends HttpServlet {
                             for (String item : selectedItems) {
                                 cart.removeItemFromCart(item);
                             }
-                        session.setAttribute("cart", cart);
+                        session.setAttribute("CART", cart);
                         } //cust must be chosen
                     } //end items have existed
                 } //end cart has existed

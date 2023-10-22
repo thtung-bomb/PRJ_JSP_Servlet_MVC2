@@ -6,7 +6,7 @@
 package tungnt.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tungnt.Cart.CartObject;
+import tungnt.Product.ProductDAO;
+import tungnt.Product.ProductDTO;
 
 /**
  *
@@ -23,35 +25,38 @@ import tungnt.Cart.CartObject;
 @WebServlet(name = "CheckoutServlet", urlPatterns = {"/CheckoutServlet"})
 public class CheckoutServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        ProductDAO dao = new ProductDAO();
+//        float unitprice = 0;
         String url = "checkout.jsp";
         String name = request.getParameter("txtName");
         String address = request.getParameter("txtAddress");
-        HttpSession session = request.getSession(false); //check kiem tra
+        float total = 0;
         try {
-            if (session == null) {
-                CartObject cart = (CartObject) session.getAttribute("cart"); //cart.setAttribute
+            HttpSession session = request.getSession();
+            CartObject cart = (CartObject) session.getAttribute("CART");
+            //get id book bought
+            if (cart != null) {
+                //3. Cust gets items
+
             }
+            //get unitprice by id
+            
+            //get quantity usebought
+
+            //get total by id 
+            total = unitprice * quantity;
             request.setAttribute("NAME", name);
             request.setAttribute("ADDRESS", address);
+            request.setAttribute("TOTAL", total);
+            System.out.println(itemId + " " + unitprice + " " + total);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-
         }
 
     }

@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Thanh Tung
  */
 public class CartObject implements Serializable {
-
+    
     private Map<String, Integer> items;
 
     public Map<String, Integer> getItems() {
@@ -23,13 +23,14 @@ public class CartObject implements Serializable {
     
     public CartObject() {
     }
-
+    
     public void addItemToCart(String itemID, int quantity) {
         //1. check item existed
         
         if (itemID == null) {
             return;
         }
+        
         if (itemID.trim().isEmpty()) {
             return;
         }

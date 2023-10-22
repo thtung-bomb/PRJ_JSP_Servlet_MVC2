@@ -28,10 +28,10 @@ public class LogoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
 //        String username = request.getParameter("");
         String url = LOGIN_PAGE;
-        
+
         try {
             Cookie[] cookies = request.getCookies();
             for (Cookie cookie : cookies) {

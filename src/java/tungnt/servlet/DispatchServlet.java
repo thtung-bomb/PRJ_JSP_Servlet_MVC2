@@ -6,7 +6,6 @@
 package tungnt.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,8 +33,8 @@ public class DispatchServlet extends HttpServlet {
     private final String REMOVE_CART_CONTROLLER = "RemoveCartServlet";
     private final String CREATE_ACCOUNT_CONTROLLER = "RigisterServlet";
     private final String CHECKOUT_CONTROLLER = "CheckoutServlet";
-    
-   
+    private final String VIEW_BOOK_CONTROLLER = "viewBookShopServlet";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -54,9 +53,9 @@ public class DispatchServlet extends HttpServlet {
                 url = DELETE_ACCOUNT_CONTROLLER;
             } else if (button.equals("Update")) {
                 url = UPDATE_ACCOUNT_CONTROLLER;
-            } else if (button.equals("Add Book to Your Cart")) {
+            } else if (button.equals("AddBookToCart")) {
                 url = ADD_ITEM_TO_CART_CONTROLLER; //b2 create new dispatch
-            } else if (button.equals("Sign Out")) {
+            } else if (button.equals("Logout")) {
                 url = LOG_OUT_CONTROLLER;
             } else if (button.equals("View Your Cart")) {
                 url = VIEW_CART_PAGE;
@@ -66,6 +65,8 @@ public class DispatchServlet extends HttpServlet {
                 url = CREATE_ACCOUNT_CONTROLLER;
             } else if (button.equals("Checkout")) {
                 url = CHECKOUT_CONTROLLER;
+            } else if (button.equals("View Book")) {
+                url = VIEW_BOOK_CONTROLLER;
             }
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tungnt.book;
+package tungnt.Product;
 
 import java.io.Serializable;
 
@@ -11,64 +11,93 @@ import java.io.Serializable;
  *
  * @author Thanh Tung
  */
-public class BookDTO implements Serializable {
-    
+public class ProductDTO implements Serializable {
+
     private String id;
     private String name;
     private int quantity;
     private float unitprice;
     private boolean status;
 
-    public BookDTO() {
+    public ProductDTO() {
     }
-
-    public BookDTO(String id, String name, int quantity, float unitprice, boolean status) {
+    
+    public ProductDTO(String id, String name, int quantity, float unitprice, boolean status) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.unitprice = unitprice;
         this.status = status;
     }
-    
+
+    /**
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return the quantity
+     */
     public int getQuantity() {
         return quantity;
     }
 
+    /**
+     * @param quantity the quantity to set
+     */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
+    /**
+     * @return the unitprice
+     */
     public float getUnitprice() {
         return unitprice;
     }
 
+    /**
+     * @param unitprice the unitprice to set
+     */
     public void setUnitprice(float unitprice) {
         this.unitprice = unitprice;
     }
 
+    /**
+     * @return the status
+     */
     public boolean isStatus() {
         return status;
     }
 
+    /**
+     * @param status the status to set
+     */
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
-    
+
 }

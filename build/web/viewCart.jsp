@@ -15,19 +15,19 @@
     </head>
     <body>
         <a href="login.html">Back to Home Page</a>
-        <H1>Book Store</H1>
-            <%
-                //1. Cust goes to cart place
-                //session scope
-                if (session != null) {
-                    //check co ton tai khong
-                    //2. Cist takes his/her cart
-                    CartObject cart = (CartObject) session.getAttribute("cart"); //cart.setAttribute
-                    if (cart != null) {
-                        //3. Cust gets items
-                        Map<String, Integer> items = cart.getItems(); //ngan chua do 
-                        if (items != null) {
-            %>
+        <h1>Book Store</h1>
+        <%
+            //1. Cust goes to cart place
+            //session scope
+            if (session != null) {
+                //check co ton tai khong
+                //2. Cust takes his/her cart
+                CartObject cart = (CartObject) session.getAttribute("CART"); //cart.setAttribute
+                if (cart != null) {
+                    //3. Cust gets items
+                    Map<String, Integer> items = cart.getItems(); //ngan chua do 
+                    if (items != null) {
+        %>
         <form action="DispatchServlet">
             <table border="1">
                 <thead>
@@ -48,7 +48,7 @@
                             <%= ++count%>
                         </td>
                         <td>
-                            <%= key %>
+                            <%= key%>
                         </td>
                         <td>
                             <%= items.get(key)%>
@@ -62,7 +62,7 @@
                     %>
                     <tr>
                         <td colspan="3"> 
-                            <a href="BookStore.jsp">Add more book to your cart</a>
+                            <a href="viewBookShopServlet">Add more book to your cart</a>
                         </td>
                         <td>
                             <input type="submit" value="Remove Selected Items" name="btAction" />
@@ -71,7 +71,7 @@
                 </tbody>
             </table>        
         </form>
-        
+
         <form action="DispatchServlet" method="POST">
             Name* <input type="text" name="txtName" value="" /><br/>
             Address* <textarea name="txtAddress" value="" 
@@ -86,6 +86,6 @@
             } //cart place must be existed
         %>
         <h2>No cart is existed</h2>
-        
+        <a href="DispatchServlet?btAction=View Book">Back to shopping</a>
     </body>
 </html>

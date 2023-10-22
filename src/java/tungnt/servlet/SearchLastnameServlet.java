@@ -6,14 +6,12 @@
 package tungnt.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,10 +26,9 @@ import tungnt.registration.RegistrationDTO;
 @WebServlet(name = "SearchLastnameServlet", urlPatterns = {"/SearchLastnameServlet"})
 public class SearchLastnameServlet extends HttpServlet {
 
-//    private final String SEARCH_PAGE = "search.html";
     private final String RESULT_SEARCH_PAGE = "search.jsp";
     private final String ERROR_PAGE = "errors.html";
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,7 +44,7 @@ public class SearchLastnameServlet extends HttpServlet {
         //1. get all parameters
         String searchValue = request.getParameter("txtSearchValue");
         String url = RESULT_SEARCH_PAGE;
-        
+
         try {
             HttpSession session = request.getSession(false);
             if (session != null) {

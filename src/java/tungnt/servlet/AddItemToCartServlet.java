@@ -6,7 +6,6 @@
 package tungnt.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,42 +21,42 @@ import tungnt.Cart.CartObject;
 @WebServlet(name = "AddItemToCartServlet", urlPatterns = {"/AddItemToCartServlet"})
 public class AddItemToCartServlet extends HttpServlet {
 
-    private final String BOOK_PAGE = "BookStore.jsp";
-
     //b3 tao servlet chuc nang
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = BOOK_PAGE;
-            
+
         try {
             //1. Cus -> cart place
             HttpSession session = request.getSession(); //check kiem tra
             //luon luon co thi phai true -> default
             //2. Cus take cart
-            CartObject cart = (CartObject) session.getAttribute("cart");
+            CartObject cart = (CartObject) session.getAttribute("CART");
             if (cart == null) {
                 cart = new CartObject();
             } //cart has init
-                
+
             //3. cus drop item to cart
-            String itemId = request.getParameter("ddlBook");
-            String quantityRequest = request.getParameter("bookQuantity");
-            if (!quantityRequest.trim().isEmpty()) {
-                int quantity = Integer.parseInt(quantityRequest);
-                cart.addItemToCart(itemId, quantity);
-            }
+            String itemId = request.getParameter("dllBook");
+            String quantityRequest = request.getParameter("txtQuantity");
+            int quantity = Integer.parseInt(quantityRequest);
+            cart.addItemToCart(itemId, quantity);
+            
             //cart.addItemToCart(itemId, 1); //form tinh~
-                
             //items must be setAttribute
             //name copy from cart = (CartObject)
-            session.setAttribute("cart", cart);
-                
+            session.setAttribute("CART", cart);
+            
             //4. Customer goes to shopping -> returned BookStore.html
             //chua method <-> model 
         } finally {
             //responde tra ve mat gi do moi nghi den fw
-            response.sendRedirect(url);
+            String urlRewiting = "DispatchServlet"
+                    + "?btAction=View Book";
+            response.sendRedirect(urlRewiting);
+
+//            RequestDispatcher rd = request.getRequestDispatcher(url);
+//            rd.forward(request, response);
         }
     }
 

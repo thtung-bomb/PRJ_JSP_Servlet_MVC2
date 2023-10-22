@@ -6,7 +6,6 @@
 package tungnt.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 import javax.naming.NamingException;
@@ -16,46 +15,38 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import tungnt.book.BookDAO;
-import tungnt.book.BookDTO;
+import javax.servlet.http.HttpSession;
+import tungnt.Product.ProductDAO;
+import tungnt.Product.ProductDTO;
 
 /**
  *
  * @author Thanh Tung
  */
-@WebServlet(name = "ViewBookstoreServlet", urlPatterns = {"/ViewBookstoreServlet"})
-public class ViewBookstoreServlet extends HttpServlet {
+@WebServlet(name = "viewBookShopServlet", urlPatterns = {"/viewBookShopServlet"})
+public class ViewBookShopServlet extends HttpServlet {
 
-    private String VIEW_BOOK_STORE = "BookStore.jsp";
+    private final String BOOK_SHOP = "viewBookShop.jsp";
+    private final String ERROR_PAGE = "errors.html";
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = VIEW_BOOK_STORE;
-        BookDAO dao = new BookDAO();
-        List<BookDTO> result = null;
+        response.setContentType("text/html;charset=UTF-8");
+        ProductDAO dao = new ProductDAO();
+        String url = BOOK_SHOP;
         try {
-            //2. Call DAO
-            //2.1 new DAO
-            //2.2 call method
-            dao.listBook();
-            //3. process
-            result = dao.getBooks();
-            request.setAttribute("BOOK_RESULT", result);
-            System.out.println("result = " + result);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+//            HttpSession session = request.getSession();
+            dao.getAllBook();
+
+            List<ProductDTO> listBooks = dao.getBooks();
+
+            request.setAttribute("PRODUCT", listBooks);
+
         } catch (NamingException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

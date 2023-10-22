@@ -27,7 +27,6 @@ public class RegistrationDAO implements Serializable {
         Connection con = null;//khai bao
         PreparedStatement stm = null;
         ResultSet rs = null;
-//        boolean result = false;
         RegistrationDTO result = null;
         try {
             //1. Create Connection
@@ -163,7 +162,7 @@ public class RegistrationDAO implements Serializable {
         }
         return result;
     }
-
+    
     public boolean updateAccount(String username, String password, boolean isAdmin) throws SQLException, NamingException, ClassNotFoundException {
 
         //connect

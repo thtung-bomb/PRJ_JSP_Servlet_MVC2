@@ -6,21 +6,16 @@
 package tungnt.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
 import java.sql.SQLException;
 import javax.naming.NamingException;
-import javax.servlet.Registration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tungnt.registration.RegistrationDAO;
 import tungnt.registration.RegistrationDTO;
-import tungnt.util.DBHelper;
 
 /**
  *
@@ -47,7 +42,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
         String url = INVALID_PAGE;
-        
+
         try {
             //ghi o phia client                 
             //2. call DAO
@@ -60,7 +55,7 @@ public class LoginServlet extends HttpServlet {
             if (resutlt != null) {
                 url = SEARCH_PAGE;
                 HttpSession session = request.getSession(); //login thanh cong chac chan phai luu lai
-                                                            //luu lai thi bang true             
+                //luu lai thi bang true             
                 session.setAttribute("USER_INFOR", resutlt);
             } //end username and password are verified
         } catch (SQLException ex) {
