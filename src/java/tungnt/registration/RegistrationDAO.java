@@ -20,10 +20,10 @@ import tungnt.util.DBHelper;
  * @author Thanh Tung
  */
 public class RegistrationDAO implements Serializable {
-    
+
     public RegistrationDTO checkLogin(String username, String password)
             throws SQLException, NamingException, ClassNotFoundException { //bat loi con.close();
-        
+
         Connection con = null;//khai bao
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -67,7 +67,7 @@ public class RegistrationDAO implements Serializable {
         }
         return result;
     }
-    
+
     private List<RegistrationDTO> accounts;
 
     public List<RegistrationDTO> getAccounts() {
@@ -162,7 +162,7 @@ public class RegistrationDAO implements Serializable {
         }
         return result;
     }
-    
+
     public boolean updateAccount(String username, String password, boolean isAdmin) throws SQLException, NamingException, ClassNotFoundException {
 
         //connect
@@ -208,8 +208,9 @@ public class RegistrationDAO implements Serializable {
         return result;
     }
 
-    public boolean createNewAccount(String username, String password, String lastName, boolean isRole)
+    public boolean createNewAccount(RegistrationDTO account)
             throws SQLException, NamingException, ClassNotFoundException {
+        //truyen vao 1 DTO
         Connection con = null;
         PreparedStatement stm = null;
         boolean result = false;
@@ -218,20 +219,23 @@ public class RegistrationDAO implements Serializable {
             con = DBHelper.createConnection();
             if (con != null) {
                 //2. Create SQL String
-                String sql = "INSERT INTO Registration (username, password, lastname, isAdmin) "
-                        + "VALUES (? , ?, ?, ?);";
+                String sql = "Insert Into Registration("
+                        + "username, password, lastname, isAdmin"
+                        + ") Values("
+                        + "?, ?, ?, ?"
+                        + ")";
                 //3. Create statement Object
                 stm = con.prepareStatement(sql);
-                stm.setString(1, username);
-                stm.setString(2, password);
-                stm.setString(3, lastName);
-                stm.setBoolean(4, isRole);
-                //4. Execute Query  
+                stm.setString(1, account.getUsername());
+                stm.setString(2, account.getPassword());
+                stm.setString(3, account.getFullName());
+                stm.setBoolean(4, account.isRole());
+                //4. Execute Query
+                int effectRows = stm.executeUpdate();
                 //5. Process
-                int effectRow = stm.executeUpdate();
 
-                if (effectRow > 0) {
-                    return true;
+                if (effectRows > 0) {
+                    result = true;
                 }
             }
         } finally {

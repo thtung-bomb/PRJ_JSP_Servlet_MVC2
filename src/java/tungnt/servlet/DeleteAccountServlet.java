@@ -8,13 +8,16 @@ package tungnt.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Properties;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tungnt.registration.RegistrationDAO;
+import tungnt.util.MyApplicationConstain;
 
 /**
  *
@@ -22,9 +25,8 @@ import tungnt.registration.RegistrationDAO;
  */
 @WebServlet(name = "DeleteAccountServlet", urlPatterns = {"/DeleteAccountServlet"})
 public class DeleteAccountServlet extends HttpServlet {
-    
-    private final String ERROR_PAGE = "errors.html";
 
+//    private final String ERROR_PAGE = "errors.html";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,10 +40,14 @@ public class DeleteAccountServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        //
+        ServletContext context = this.getServletContext();
+        Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
+
         //duong link detelete truyen ve bao nhieu parameter
         String username = request.getParameter("pk");
         String searchValue = request.getParameter("lastSearchValue");
-        String url = ERROR_PAGE;
+        String url = siteMaps.getProperty(MyApplicationConstain.ErrorsPage.ERROR_PAGE);
 
         try {
             //2. Call DAO

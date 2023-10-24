@@ -8,8 +8,10 @@ package tungnt.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tungnt.registration.RegistrationDAO;
 import tungnt.registration.RegistrationDTO;
+import tungnt.util.MyApplicationConstain;
 
 /**
  *
@@ -26,9 +29,8 @@ import tungnt.registration.RegistrationDTO;
 @WebServlet(name = "SearchLastnameServlet", urlPatterns = {"/SearchLastnameServlet"})
 public class SearchLastnameServlet extends HttpServlet {
 
-    private final String RESULT_SEARCH_PAGE = "search.jsp";
-    private final String ERROR_PAGE = "errors.html";
-    
+//    private final String RESULT_SEARCH_PAGE = "search.jsp";
+//    private final String ERROR_PAGE = "errorpage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,10 +43,13 @@ public class SearchLastnameServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        //0. 
+        ServletContext context = this.getServletContext();
+        Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
         //1. get all parameters
         String searchValue = request.getParameter("txtSearchValue");
-        String url = RESULT_SEARCH_PAGE;
-
+        String url = siteMaps.getProperty(MyApplicationConstain.ErrorsPage.ERROR_PAGE);
+        
         try {
             HttpSession session = request.getSession(false);
             if (session != null) {
@@ -59,11 +64,11 @@ public class SearchLastnameServlet extends HttpServlet {
                     List<RegistrationDTO> searchResult = registrationDAO.getAccounts(); //dang o controller -> view
                     //send result -> url
                     //use requestScope
-                    url = RESULT_SEARCH_PAGE;
+                    url = siteMaps.getProperty(MyApplicationConstain.SearchLastnameFeaturee.RESULT_SEARCH_PAGE);
                     request.setAttribute("SEARCH_RESULT", searchResult);
                 } //end user typed valid value 
             } else {
-                url = ERROR_PAGE;
+                url = siteMaps.getProperty(MyApplicationConstain.ErrorsPage.ERROR_PAGE);
             }
         } //end username and password are verified
         catch (SQLException ex) {

@@ -8,13 +8,16 @@ package tungnt.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Properties;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tungnt.registration.RegistrationDAO;
+import tungnt.util.MyApplicationConstain;
 
 /**
  *
@@ -23,8 +26,7 @@ import tungnt.registration.RegistrationDAO;
 @WebServlet(name = "UpdateAccountServlet", urlPatterns = {"/UpdateAccountServlet"})
 public class UpdateAccountServlet extends HttpServlet {
 
-    private final String ERROR_PAGE = "errors.html";
-
+//    private final String ERROR_PAGE = "errors.html";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,20 +39,22 @@ public class UpdateAccountServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        ServletContext context = this.getServletContext();
+        Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
         //duong link Update truyen ve bao nhieu parameter
         //update se can cai gi de update
         //-> password, role, username
+
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
         String searchValue = request.getParameter("lastSearch");
         boolean isAdmin = false;
-        String url = ERROR_PAGE;
+        String url = siteMaps.getProperty(MyApplicationConstain.ErrorsPage.ERROR_PAGE);
         
         if (request.getParameter("chkRole") != null) {
             isAdmin = true;
         }
-        
+
         try {
             //2. Call DAO
             //2.1 create new DAO

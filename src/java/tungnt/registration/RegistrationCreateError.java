@@ -18,6 +18,8 @@ public class RegistrationCreateError implements Serializable {
     private String confirmNotMatched;
     private String usernameIsExisted;
 
+    //this is javaBean
+        
     public RegistrationCreateError() {
     }
 

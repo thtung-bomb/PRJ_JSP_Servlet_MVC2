@@ -62,7 +62,7 @@
                     %>
                     <tr>
                         <td colspan="3"> 
-                            <a href="viewBookShopServlet">Add more book to your cart</a>
+                            <a href="DispatchServlet?btAction=View Book">Add more book to your cart</a>
                         </td>
                         <td>
                             <input type="submit" value="Remove Selected Items" name="btAction" />
@@ -84,7 +84,7 @@
                     } //end items have existed
                 } //cart is existed
             } //cart place must be existed
-        %>
+%>
         <h2>No cart is existed</h2>
         <a href="DispatchServlet?btAction=View Book">Back to shopping</a>
     </body>

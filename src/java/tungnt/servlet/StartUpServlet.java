@@ -8,7 +8,9 @@ package tungnt.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Properties;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tungnt.registration.RegistrationDAO;
 import tungnt.registration.RegistrationDTO;
+import tungnt.util.MyApplicationConstain;
 
 /**
  *
@@ -25,9 +28,8 @@ import tungnt.registration.RegistrationDTO;
 @WebServlet(name = "StartUpServlet", urlPatterns = {"/StartUpServlet"})
 public class StartUpServlet extends HttpServlet {
 
-    private final String LOGIN__PAGE = "login.html";
-    private final String SEARCH_PAGE = "search.jsp";
-
+//    private final String LOGIN__PAGE = "login.html";
+//    private final String SEARCH_PAGE = "search.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,9 +41,10 @@ public class StartUpServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ServletContext context = this.getServletContext();
+        Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
         response.setContentType("text/html;charset=UTF-8");
-        String url = LOGIN__PAGE;
-        
+        String url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.LOGIN_PAGE);
         try {
             /* TODO output your page here. You may use following sample code. */
             //2. tao servlet chuc nang
@@ -62,10 +65,10 @@ public class StartUpServlet extends HttpServlet {
                 RegistrationDAO dao = new RegistrationDAO();
                 //3.2 call method DAO
 //                boolean result = dao.checkLogin(username, password);
-                    RegistrationDTO result = dao.checkLogin(username, password);
+                RegistrationDTO result = dao.checkLogin(username, password);
                 //4. Process result
                 if (result != null) {
-                    url = SEARCH_PAGE;
+                    url = siteMaps.getProperty(MyApplicationConstain.LoginFeature.SEARCH_PAGE);
                 } //user is authenticated
             } //end cookies has existed
         } catch (SQLException ex) {

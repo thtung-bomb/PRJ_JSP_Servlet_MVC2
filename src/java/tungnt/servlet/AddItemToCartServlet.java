@@ -39,14 +39,17 @@ public class AddItemToCartServlet extends HttpServlet {
             //3. cus drop item to cart
             String itemId = request.getParameter("dllBook");
             String quantityRequest = request.getParameter("txtQuantity");
-            int quantity = Integer.parseInt(quantityRequest);
-            cart.addItemToCart(itemId, quantity);
-            
+            if (quantityRequest != null) {
+                int quantity = Integer.parseInt(quantityRequest);
+                cart.addItemToCart(itemId, quantity);
+            } else {
+                return;
+            }
             //cart.addItemToCart(itemId, 1); //form tinh~
             //items must be setAttribute
             //name copy from cart = (CartObject)
             session.setAttribute("CART", cart);
-            
+
             //4. Customer goes to shopping -> returned BookStore.html
             //chua method <-> model 
         } finally {

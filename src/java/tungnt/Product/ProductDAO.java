@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.naming.NamingException;
 import tungnt.util.DBHelper;
 
@@ -92,7 +93,7 @@ public class ProductDAO implements Serializable {
                 String sql = "Select unitprice "
                         + "From product "
                         + "Where name = ?";
-                
+
                 stm = con.prepareStatement(sql);
                 stm.setString(1, productId);
 
@@ -116,6 +117,59 @@ public class ProductDAO implements Serializable {
 
         return result;
 
+    }
+
+    public void getProductOfId(Set<String> items) throws ClassNotFoundException, SQLException, NamingException {
+
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+
+            con = DBHelper.createConnection();
+
+            if (con != null) {
+                String sql = "Select id, name, quantity, unitprice, status "
+                        + "From [Product] "
+                        + "Where id in (" + items + ")";
+                System.out.println(items);
+                stm = con.prepareStatement(sql);
+                
+                rs = stm.executeQuery();
+
+                while (rs.next()) {
+                    String id = rs.getString("id");
+                    String name = rs.getString("name");
+                    int quantity = rs.getInt("quantity");
+                    float unitprice = rs.getFloat("unitprice");
+                    boolean status = rs.getBoolean("status");
+                    //5.2 set data into DTO
+                    ProductDTO dto = new ProductDTO(id, name, quantity, unitprice, status);
+
+                    //5.3 add DTO into List
+                    if (this.books == null) {
+                        books = new ArrayList<>();
+                    }
+                    this.books.add(dto);
+                }
+
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    public boolean updateQuantity(Connection con, String id, int quantity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

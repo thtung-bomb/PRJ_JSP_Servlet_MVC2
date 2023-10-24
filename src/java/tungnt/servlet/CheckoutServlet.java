@@ -6,7 +6,6 @@
 package tungnt.servlet;
 
 import java.io.IOException;
-import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tungnt.Cart.CartObject;
+import tungnt.OrderDetail.OrderDetailDAO;
 import tungnt.Product.ProductDAO;
-import tungnt.Product.ProductDTO;
 
 /**
  *
@@ -24,7 +23,7 @@ import tungnt.Product.ProductDTO;
  */
 @WebServlet(name = "CheckoutServlet", urlPatterns = {"/CheckoutServlet"})
 public class CheckoutServlet extends HttpServlet {
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -33,35 +32,27 @@ public class CheckoutServlet extends HttpServlet {
         String url = "checkout.jsp";
         String name = request.getParameter("txtName");
         String address = request.getParameter("txtAddress");
-        float total = 0;
+        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
         try {
             HttpSession session = request.getSession();
+            //get cart
             CartObject cart = (CartObject) session.getAttribute("CART");
-            //get id book bought
-            if (cart != null) {
-                //3. Cust gets items
-
-            }
-            //get unitprice by id
             
-            //get quantity usebought
-
-            //get total by id 
-            total = unitprice * quantity;
+            //get quantity of each items
+            String orderId = orderDetailDAO.checkout(cart, name, address);
+            
             request.setAttribute("NAME", name);
             request.setAttribute("ADDRESS", address);
-            request.setAttribute("TOTAL", total);
-            System.out.println(itemId + " " + unitprice + " " + total);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }
-
+        
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

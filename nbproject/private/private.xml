@@ -12,10 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/servlet/SearchLastnameServlet.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/registration/RegistrationDAO.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/servlet/DispatchServlet.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/search.jsp</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/Product/ProductDAO.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/OrderDetail/OrderDetailDAO.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/Order/OrderDAO.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/checkout.jsp</file>
         </group>
     </open-files>
 </project-private>

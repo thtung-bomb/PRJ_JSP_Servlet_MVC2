@@ -7,7 +7,9 @@ package tungnt.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Properties;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import tungnt.util.MyApplicationConstain;
 
 /**
  *
@@ -23,15 +26,16 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
 public class LogoutServlet extends HttpServlet {
 
-    private final String LOGIN_PAGE = "login.html";
-
+//    private final String LOGIN_PAGE = "login.html";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        //0.
+        ServletContext context = this.getServletContext();
+        Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
 //        String username = request.getParameter("");
-        String url = LOGIN_PAGE;
-
+        String url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.LOGIN_PAGE);
+        
         try {
             Cookie[] cookies = request.getCookies();
             for (Cookie cookie : cookies) {

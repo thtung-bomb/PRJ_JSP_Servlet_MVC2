@@ -21,25 +21,44 @@
             <h2>${requestScope.NAME}</h2>
             <h2>${requestScope.ADDRESS}</h2>
         </div>
-        <%
-            CartObject cart = (CartObject) session.getAttribute("CART"); //cart.setAttribute
-            if (cart != null) {
-                Map<String, Integer> items = cart.getItems(); //ngan chua do 
-        %>
+        
+        <c:set var="items" value="${sessionScope.CART.items}"/>
         <table border="1">
             <thead>
                 <tr>
-                    <th>No.</th>
+                    <th>NO.</th>
                     <th>Name</th>
                     <th>Quantity</th>
                     <th>Total</th>
                 </tr>
             </thead>
             <tbody>
-                <%
-                    int count = 0;
-                    for (String key : items.keySet()) {
-                %>
+                
+            </tbody>
+        </table>
+
+    </body>
+    <%--  <%
+          CartObject cart = (CartObject) session.getAttribute("CART"); //cart.setAttribute
+          if (cart != null) {
+              Map<String, Integer> items = cart.getItems(); //ngan chua do 
+      %>
+      <c:set var="result" value="${requestScope.PRICE_ITEMS}" />
+      <table border="1">
+          <thead>
+              <tr>
+                  <th>No.</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+              </tr>
+          </thead>
+          <tbody>
+              <%
+                  int count = 0;
+                  for (String key : items.keySet()) {
+              %>
+
                 <tr>
                     <td>
                         <%= ++count%>
@@ -47,16 +66,26 @@
                     <td>
                         <%= key%>
                     </td>
-                    <td>
+                    <td style="text-align: center">
                         <%= items.get(key)%>
                     </td>
                     <td>
-                        
+                        <c:forEach items="${result}" var="total">
+                            ${total}
+                        </c:forEach>
                     </td>
                 </tr>
+
                 <%
                     } //end get key value of each items
                 %>
+
+                <tr>
+                    <td colspan="4" style="text-align: right">
+                        Total: ${requestScope.TOTAL_RECEIPT}
+                    </td>
+                </tr>
+
                 <% session.invalidate();
                 } else {
                 %>
@@ -67,55 +96,55 @@
             %>
         </tbody>
     </table>
-</body>
-<%--   <%
-        CartObject cart = (CartObject) session.getAttribute("CART"); //cart.setAttribute
-        if (cart != null) {
-            Map<String, Integer> items = cart.getItems(); //ngan chua do 
-   %>
-    <table border="1">
-       <thead>
-           <tr>
-               <th>No.</th>
-               <th>Name</th>
-               <th>Quantity</th>
-           </tr>
-       </thead>
-       <tbody>
-           <%
-               int count = 0;
-               for (String key : items.keySet()) {
-           %>
-           <tr>
-               <td>
-                   <%= ++count%>
-               </td>
-               <td>
-                   <%= key%>
-               </td>
-               <td>
-                   <%= items.get(key)%>
-               </td>
-           </tr>
-           <%
-               } //end get key value of each items
-           %>
-           <% session.invalidate();
-           } else {
-           %>
-       <h1>No items to checkout</h1>
-       <a href="DispatchServlet?btAction=View Book">Back to shopping</a>
-       <%
-           }
+    --%>
+    <%--   <%
+            CartObject cart = (CartObject) session.getAttribute("CART"); //cart.setAttribute
+            if (cart != null) {
+                Map<String, Integer> items = cart.getItems(); //ngan chua do 
        %>
-   </tbody>
-</table>        
---%>
+        <table border="1">
+           <thead>
+               <tr>
+                   <th>No.</th>
+                   <th>Name</th>
+                   <th>Quantity</th>
+               </tr>
+           </thead>
+           <tbody>
+               <%
+                   int count = 0;
+                   for (String key : items.keySet()) {
+               %>
+               <tr>
+                   <td>
+                       <%= ++count%>
+                   </td>
+                   <td>
+                       <%= key%>
+                   </td>
+                   <td>
+                       <%= items.get(key)%>
+                   </td>
+               </tr>
+               <%
+                   } //end get key value of each items
+               %>
+               <% session.invalidate();
+               } else {
+               %>
+           <h1>No items to checkout</h1>
+           <a href="DispatchServlet?btAction=View Book">Back to shopping</a>
+           <%
+               }
+           %>
+       </tbody>
+    </table>        
+    --%>
 
 
 
-<%--        <c:set var="items" value="${sessionScope.CART.items}"/>
-    <c:if test="${not empty items}">
+    <%--        <c:set var="items" value="${sessionScope.CART.items}"/>
+        <c:if test="${not empty items}">
 
             <table border="1">
                 <thead>
@@ -134,13 +163,13 @@
                                 ${counter.count}
                             </td>
                             <td>
-<%--
-${item.itemId}
+    <%--
+    ${item.itemId}
 
 </td>
 <td>
-<%-- 
-${item.quantity}
+    <%-- 
+    ${item.quantity}
 
 </td>
 </tr>
@@ -152,5 +181,5 @@ ${item.quantity}
 <h1>NO ITEM IN CART !!!</h1>
 <a href="DispatchServlet?btAction=View Book">Back to Shopping</a>
 </c:if>
---%>
+    --%>
 </html>

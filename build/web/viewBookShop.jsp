@@ -37,12 +37,12 @@
                 <tbody>
                     <c:forEach items="${products}" var="product" varStatus="counter">
                     <form action="DispatchServlet">
-                        <tr>
+                        <tr loading="lazy">
                             <td>
                                 ${counter.count}
                             </td>
                             <td>
-                                <input type="hidden" name="dllBook" value="${product.name}" />
+                                <input type="hidden" name="dllBook" value="${product.id}" />
                                 ${product.name}
                             </td>
                             <td>    

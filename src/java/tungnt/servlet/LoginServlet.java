@@ -7,8 +7,10 @@ package tungnt.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Properties;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tungnt.registration.RegistrationDAO;
 import tungnt.registration.RegistrationDTO;
+import tungnt.util.MyApplicationConstain;
 
 /**
  *
@@ -23,8 +26,8 @@ import tungnt.registration.RegistrationDTO;
  */
 public class LoginServlet extends HttpServlet {
 
-    private final String SEARCH_PAGE = "search.jsp";
-    private final String INVALID_PAGE = "invalid.html";
+//    private final String SEARCH_PAGE = "searchPage";
+//    private final String INVALID_PAGE = "invalidPage";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,11 +41,12 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        ServletContext context = this.getServletContext();
+        Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
-        String url = INVALID_PAGE;
-
+        String url = siteMaps.getProperty(MyApplicationConstain.LoginFeature.INVALID_PAGE);
+        
         try {
             //ghi o phia client                 
             //2. call DAO
@@ -53,7 +57,9 @@ public class LoginServlet extends HttpServlet {
             RegistrationDTO resutlt = dao.checkLogin(username, password);
             //3. process result
             if (resutlt != null) {
-                url = SEARCH_PAGE;
+//                url = SEARCH_PAGE;
+//                url = siteMaps.getProperty(SEARCH_PAGE);
+                url = siteMaps.getProperty(MyApplicationConstain.LoginFeature.SEARCH_PAGE);
                 HttpSession session = request.getSession(); //login thanh cong chac chan phai luu lai
                 //luu lai thi bang true             
                 session.setAttribute("USER_INFOR", resutlt);
