@@ -27,7 +27,7 @@ import tungnt.util.DBHelper;
  */
 public class OrderDetailDAO implements Serializable {
 
-    public boolean createOrderDetail(String orderId, String productId, int cartQuantity, float unitprice)
+    public boolean createOrderDetail(String orderId, String productId, int cartQuantity, float unitprice, float productTotal)
             throws SQLException, ClassNotFoundException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -37,7 +37,6 @@ public class OrderDetailDAO implements Serializable {
         try {
             con = DBHelper.createConnection();
             if (con != null) {
-
                 String sql = "Insert into [OrderDetail] "
                         + "(productId, quantity, price, total, orderId) "
                         + "Values (?, ?, ?, ?, ?)";
@@ -45,7 +44,7 @@ public class OrderDetailDAO implements Serializable {
                 stm.setString(1, productId); //productId
                 stm.setInt(2, cartQuantity); //CartQuantity
                 stm.setFloat(3, unitprice); //price
-                stm.setFloat(4, 0); //total
+                stm.setFloat(4, productTotal); //total
                 stm.setString(5, orderId); //orderId
 
                 int effectRows = stm.executeUpdate();
@@ -54,7 +53,7 @@ public class OrderDetailDAO implements Serializable {
                     result = true;
                 }
             }
-
+            
         } finally {
             if (rs != null) {
                 rs.close();
@@ -105,7 +104,7 @@ public class OrderDetailDAO implements Serializable {
                     }
                     //create detail 
                     float productTotal = product.getUnitprice() * cartQuantity;
-                    boolean detailCreated = this.createOrderDetail(orderId, product.getId(), cartQuantity, product.getUnitprice());
+                    boolean detailCreated = this.createOrderDetail(orderId, product.getId(), cartQuantity, product.getUnitprice(), productTotal);
                     boolean updateResult = productDAO.updateQuantity(con, product.getId(), productQuantity - cartQuantity);
                     //if cant create then rollback
                     if (!detailCreated || !updateResult) {
