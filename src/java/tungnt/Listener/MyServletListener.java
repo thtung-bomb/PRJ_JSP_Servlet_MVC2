@@ -18,7 +18,7 @@ import javax.servlet.ServletContextListener;
  * @author Thanh Tung
  */
 public class MyServletListener implements ServletContextListener {
-
+    
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("Application is deploying...............");
@@ -47,7 +47,7 @@ public class MyServletListener implements ServletContextListener {
                 }
             }
         }
-
+        
     }
 
     @Override

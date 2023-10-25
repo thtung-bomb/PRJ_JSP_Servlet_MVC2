@@ -119,7 +119,8 @@ public class ProductDAO implements Serializable {
 
     }
 
-    public void getProductOfId(Set<String> items) throws ClassNotFoundException, SQLException, NamingException {
+    public void getProductOfId(Set<String> items)
+            throws ClassNotFoundException, SQLException, NamingException {
 
         Connection con = null;
         PreparedStatement stm = null;
@@ -130,12 +131,24 @@ public class ProductDAO implements Serializable {
             con = DBHelper.createConnection();
 
             if (con != null) {
-                String sql = "Select id, name, quantity, unitprice, status "
-                        + "From [Product] "
-                        + "Where id in (" + items + ")";
-                System.out.println(items);
-                stm = con.prepareStatement(sql);
-                
+                StringBuilder sql = new StringBuilder("SELECT id, name, quantity, unitprice, status "
+                        + " FROM Product "
+                        + " WHERE id IN (");
+                for (int i = 0; i < items.size(); i++) {
+                    sql.append("?");
+                    if (i < items.size() - 1) {
+                        sql.append(",");
+                    }
+                }
+                sql.append(")");
+                stm = con.prepareStatement(sql.toString());
+
+                // Bind each ID as a parameter
+                int parameterIndex = 1;
+                for (String id : items) {
+                    stm.setString(parameterIndex++, id);
+                }
+
                 rs = stm.executeQuery();
 
                 while (rs.next()) {
@@ -168,8 +181,40 @@ public class ProductDAO implements Serializable {
         }
     }
 
-    public boolean updateQuantity(Connection con, String id, int quantity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean updateQuantity(Connection con, String id, int quantity)
+            throws SQLException, ClassNotFoundException, NamingException {
+        con = null;
+        PreparedStatement stm = null;
+        boolean result = false;
+
+        try {
+
+            con = DBHelper.createConnection();
+            if (con != null) {
+                String sql = "Update [Product] "
+                        + "Set quantity = ? "
+                        + "Where id = ?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, quantity);
+                stm.setString(2, id);
+
+                int affecRows = stm.executeUpdate();
+
+                if (affecRows > 0) {
+                    result = true;
+                }
+
+            }
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
     }
 
 }

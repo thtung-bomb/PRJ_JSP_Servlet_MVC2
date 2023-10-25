@@ -10,14 +10,26 @@ package tungnt.OrderDetail;
  * @author Thanh Tung
  */
 public class OrderDetailDTO {
-    
+
     private int id;
     private String productId;
     private int quantity;
     private float price;
     private float total;
     private String orderId;
-    
+
+    public OrderDetailDTO() {
+    }
+
+    public OrderDetailDTO(int id, String productId, int quantity, float price, float total, String orderId) {
+        this.id = id;
+        this.productId = productId;
+        this.quantity = quantity;
+        this.price = price;
+        this.total = total;
+        this.orderId = orderId;
+    }
+
     /**
      * @return the id
      */
@@ -101,7 +113,5 @@ public class OrderDetailDTO {
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
-    
-    
-    
+
 }

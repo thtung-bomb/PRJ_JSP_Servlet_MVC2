@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
@@ -26,30 +27,32 @@ import tungnt.util.DBHelper;
  */
 public class OrderDetailDAO implements Serializable {
 
-    public boolean createDetail(Connection con, String orderId, String id, int cartQuantity, float unitprice)
+    public boolean createOrderDetail(String orderId, String productId, int cartQuantity, float unitprice)
             throws SQLException, ClassNotFoundException, NamingException {
-        con = null;
+        Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         boolean result = false;
 
         try {
             con = DBHelper.createConnection();
-            String sql = "Insert into [OrderDetail] "
-                    + "(id, productId, quantity, price, total, orderId) "
-                    + "Values (?, ?, ?, ?, ?, ?)";
-            stm = con.prepareStatement(sql);
-            stm.setString(1, id); //id
-            stm.setString(2, "h"); //productId
-            stm.setInt(3, cartQuantity); //CartQuantity
-            stm.setFloat(4, unitprice); //price
-            stm.setFloat(5, 0); //total
-            stm.setString(6, orderId); //orderId
+            if (con != null) {
 
-            int effectRows = 0;
+                String sql = "Insert into [OrderDetail] "
+                        + "(productId, quantity, price, total, orderId) "
+                        + "Values (?, ?, ?, ?, ?)";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, productId); //productId
+                stm.setInt(2, cartQuantity); //CartQuantity
+                stm.setFloat(3, unitprice); //price
+                stm.setFloat(4, 0); //total
+                stm.setString(5, orderId); //orderId
 
-            if (effectRows > 0) {
-                result = true;
+                int effectRows = stm.executeUpdate();
+
+                if (effectRows > 0) {
+                    result = true;
+                }
             }
 
         } finally {
@@ -80,14 +83,13 @@ public class OrderDetailDAO implements Serializable {
             con = DBHelper.createConnection();
             if (con != null) {
                 con.setAutoCommit(false);
-                OrderDTO order = orderDAO.createDetail(con); //--??????--- 
-                //get in in OrderDAO
+                OrderDTO order = orderDAO.createOrder(con);
+                //get id of Order
                 String orderId = order.getId();
 
-//                productDAO.loadProductsOfSkus(con, items.keySet());
                 productDAO.getProductOfId(items.keySet());
                 List<ProductDTO> products = productDAO.getBooks();
-                
+
                 float total = 0;
                 //create detail for each item in cart
                 for (ProductDTO product : products) {
@@ -103,10 +105,10 @@ public class OrderDetailDAO implements Serializable {
                     }
                     //create detail 
                     float productTotal = product.getUnitprice() * cartQuantity;
-//                    boolean detailCreated = detailDAO.createDetail(orderId, product.getId(), cartQuantity, product.getUnitprice());
+                    boolean detailCreated = this.createOrderDetail(orderId, product.getId(), cartQuantity, product.getUnitprice());
                     boolean updateResult = productDAO.updateQuantity(con, product.getId(), productQuantity - cartQuantity);
                     //if cant create then rollback
-                    if (/* !detailCreated ||*/ !updateResult) {
+                    if (!detailCreated || !updateResult) {
                         con.rollback();
                         return null;
                     }
@@ -134,6 +136,58 @@ public class OrderDetailDAO implements Serializable {
         }
 
         return null;
+    }
+
+    private List<OrderDetailDTO> orderDetails;
+
+    public List<OrderDetailDTO> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void loadOrderDetailsByOrderId(String orderId)
+            throws NamingException, SQLException, ClassNotFoundException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+
+            con = DBHelper.createConnection();
+            if (con != null) {
+                String sql = "Select id, productId, quantity, price, total "
+                        + "From [OrderDetail] "
+                        + "Where orderId = ?";
+
+                stm = con.prepareStatement(sql);
+                stm.setString(1, orderId);
+                rs = stm.executeQuery();
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String productId = rs.getString("productId");
+                    int quantity = rs.getInt("quantity");
+                    float price = rs.getFloat("price");
+                    float total = rs.getFloat("total");
+
+                    OrderDetailDTO dto = new OrderDetailDTO(id, productId, quantity, price, total, orderId);
+                    if (orderDetails == null) {
+                        orderDetails = new ArrayList<>();
+                    }
+                    orderDetails.add(dto);
+                }
+            }
+
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
     }
 
 }

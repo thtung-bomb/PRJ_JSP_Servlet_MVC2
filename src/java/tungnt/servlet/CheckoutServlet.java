@@ -6,7 +6,9 @@
 package tungnt.servlet;
 
 import java.io.IOException;
+import java.util.Properties;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import tungnt.Cart.CartObject;
 import tungnt.OrderDetail.OrderDetailDAO;
 import tungnt.Product.ProductDAO;
+import tungnt.util.MyApplicationConstain;
 
 /**
  *
@@ -27,9 +30,13 @@ public class CheckoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        ServletContext context = request.getServletContext();
+        Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
+        
         ProductDAO dao = new ProductDAO();
 //        float unitprice = 0;
-        String url = "checkout.jsp";
+        String url = siteMaps.getProperty(MyApplicationConstain.CheckoutFeature.CHECKOUT_PAGE);
         String name = request.getParameter("txtName");
         String address = request.getParameter("txtAddress");
         OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
@@ -37,9 +44,17 @@ public class CheckoutServlet extends HttpServlet {
             HttpSession session = request.getSession();
             //get cart
             CartObject cart = (CartObject) session.getAttribute("CART");
-            
-            //get quantity of each items
+            if (cart == null) {
+                return;
+            }
+            //get orderId
             String orderId = orderDetailDAO.checkout(cart, name, address);
+            
+            if (orderId != null) {
+                session.setAttribute("CART", null);
+            } else {
+                url = siteMaps.getProperty(MyApplicationConstain.ErrorsPage.ERROR_PAGE);
+            }
             
             request.setAttribute("NAME", name);
             request.setAttribute("ADDRESS", address);

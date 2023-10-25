@@ -26,7 +26,7 @@ public class MyApplicationConstain {
         public static final String CREATE_ACCOUNT_CONTROLLER = "createAccountController";
         public static final String CHECKOUT_CONTROLLER = "checkoutController";
         public static final String VIEW_BOOK_CONTROLLER = "viewBookController";
-        
+
     }
 
     public class LoginFeature {
@@ -51,6 +51,12 @@ public class MyApplicationConstain {
     public class ViewShop {
 
         public static final String SHOP_PAGE = "viewShop";
+    }
+
+    public class CheckoutFeature {
+        
+        public static final String CHECKOUT_PAGE = "checkoutPage";
+
     }
 
 }

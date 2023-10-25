@@ -24,21 +24,6 @@ import tungnt.util.MyApplicationConstain;
 public class DispatchServlet extends HttpServlet {
     //thay doi moi dung addnotation
 
-//    private final String LOGIN_PAGE = "login.html";
-//    private final String LOGIN_PAGE = "";
-//    private final String LOGIN_CONTROLLER = "LoginServlet";
-//    private final String LOGIN_CONTROLLER = "loginController";
-//    private final String SEARCH_LASTNAME_CONTROLLER = "searchPage";
-//    private final String DELETE_ACCOUNT_CONTROLLER = "DeleteAccountServlet";
-//    private final String UPDATE_ACCOUNT_CONTROLLER = "UpdateAccountServlet";
-//    private final String START_UP_CONTROLLER = "StartUpServlet";
-//    private final String ADD_ITEM_TO_CART_CONTROLLER = "AddItemToCartServlet";
-//    private final String LOG_OUT_CONTROLLER = "LogoutServlet";
-//    private final String VIEW_CART_PAGE = "viewCart.jsp";
-//    private final String REMOVE_CART_CONTROLLER = "RemoveCartServlet";
-//    private final String CREATE_ACCOUNT_CONTROLLER = "RigisterServlet";
-//    private final String CHECKOUT_CONTROLLER = "CheckoutServlet";
-//    private final String VIEW_BOOK_CONTROLLER = "viewBookShopServlet";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -47,13 +32,12 @@ public class DispatchServlet extends HttpServlet {
         Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
         //1. Which button did user click?
         String button = request.getParameter("btAction");
-        
+
         String url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.LOGIN_PAGE);
-        
+
         try {
             if (button == null) { //welcome file trigger
                 url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.START_UP_CONTROLLER);
-                System.out.println(url);
             } else if (button.equals("Login")) { //map tinh nang moi vao ben trong dieu phoi/dispatch
 //                url = LOGIN_CONTROLLER;
                 url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.LOGIN_CONTROLLER);
@@ -82,7 +66,6 @@ public class DispatchServlet extends HttpServlet {
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-            System.out.println(url);
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
