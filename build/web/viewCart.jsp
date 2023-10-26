@@ -19,54 +19,58 @@
         <h1>Book Store</h1>
 
         <c:set var="cart" value="${sessionScope.CART.items}" />
-        <form action="DispatchServlet">
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${cart}" var="cart" varStatus="counter">
+        <c:if test="${empty cart}">
+            <h1>Cart is empty</h1>
+            <a href="DispatchServlet?btAction=View Book">Back to shopping</a>
+        </c:if>
+        <c:if test="${not empty cart}">
+            <form action="DispatchServlet">
+                <table border="1">
+                    <thead>
                         <tr>
-                            <td>
-                                ${counter.count}
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${cart}" var="cart" varStatus="counter">
+                            <tr>
+                                <td>
+                                    ${counter.count}
+                                </td>
+                                <td>
+                                    ${cart.key}
+                                </td>
+                                <td>
+                                    ${cart.value}
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="chkItem" value="${cart.key}" />
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        <tr>
+                            <td colspan="3"> 
+                                <a href="DispatchServlet?btAction=View Book">Add more book to your cart</a>
                             </td>
                             <td>
-                                ${cart.key}
-                            </td>
-                            <td>
-                                ${cart.value}
-                            </td>
-                            <td>
-                                <input type="checkbox" name="chkItem" value="${cart.key}" />
+                                <input type="submit" value="Remove Selected Items" name="btAction" />
                             </td>
                         </tr>
-                    </c:forEach>
-                    <tr>
-                        <td colspan="3"> 
-                            <a href="DispatchServlet?btAction=View Book">Add more book to your cart</a>
-                        </td>
-                        <td>
-                            <input type="submit" value="Remove Selected Items" name="btAction" />
-                        </td>
-                    </tr>
-                    
-                </tbody>
-            </table>        
-        </form>
-        
-        <form action="DispatchServlet" method="POST">
-            Name* <input type="text" name="txtName" value="" /><br/>
-            Address* <textarea name="txtAddress" value="" 
-                               rows="5" cols="20"
-                               style="overflow-y: scroll; resize: none"></textarea><br/>
-            <input type="submit" value="Checkout" name="btAction" />
-        </form>
-        
-        <a href="DispatchServlet?btAction=View Book">Back to shopping</a>
+                    </tbody>
+                </table>        
+            </form>
+
+            <form action="DispatchServlet" method="POST">
+                Name* <input type="text" name="txtName" value="" /><br/>
+                Address* <textarea name="txtAddress" value="" 
+                                   rows="5" cols="20"
+                                   style="overflow-y: scroll; resize: none"></textarea><br/>
+                <input type="submit" value="Checkout" name="btAction" />
+            </form>
+        </c:if>
+
     </body>
 </html>
