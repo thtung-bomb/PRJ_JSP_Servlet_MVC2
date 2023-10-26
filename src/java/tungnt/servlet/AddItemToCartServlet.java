@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tungnt.Cart.CartObject;
+import tungnt.util.MyApplicationConstain;
 
 /**
  *
@@ -28,7 +29,10 @@ public class AddItemToCartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+        ServletContext context = request.getServletContext();
+        Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
+        String urlRewriting = "DispatchServlet"
+                + "?btAction=View Book";
         try {
             //1. Cus -> cart place
             HttpSession session = request.getSession(); //check kiem tra
@@ -38,17 +42,16 @@ public class AddItemToCartServlet extends HttpServlet {
             if (cart == null) {
                 cart = new CartObject();
             } //cart has init
-            
+
             //3. cus drop item to cart
             String itemId = request.getParameter("dllBook");
             String quantityRequest = request.getParameter("txtQuantity");
-            if (quantityRequest != null) {
+            if (quantityRequest != null && !"".equals(quantityRequest)) {
                 int quantity = Integer.parseInt(quantityRequest);
                 cart.addItemToCart(itemId, quantity);
             } else {
-//                url = siteMaps.getProperty(MyApplicationConstain.ViewShop.SHOP_PAGE);
+                urlRewriting = siteMaps.getProperty(MyApplicationConstain.ErrorsPage.ERROR_PAGE);
             }
-            //cart.addItemToCart(itemId, 1); //form tinh~
             //items must be setAttribute
             //name copy from cart = (CartObject)
             session.setAttribute("CART", cart);
@@ -58,8 +61,7 @@ public class AddItemToCartServlet extends HttpServlet {
         } finally {
             //responde tra ve mat gi do moi nghi den fw
 //            response.sendRedirect(urlRewiting);
-            String urlRewriting = "DispatchServlet"
-                    + "?btAction=View Book";
+
             RequestDispatcher rd = request.getRequestDispatcher(urlRewriting);
             rd.forward(request, response);
         }

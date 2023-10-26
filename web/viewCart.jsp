@@ -4,6 +4,7 @@
     Author     : Thanh Tung
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.Map"%>
 <%@page import="tungnt.Cart.CartObject"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,18 +17,8 @@
     <body>
         <a href="login.html">Back to Home Page</a>
         <h1>Book Store</h1>
-        <%
-            //1. Cust goes to cart place
-            //session scope
-            if (session != null) {
-                //check co ton tai khong
-                //2. Cust takes his/her cart
-                CartObject cart = (CartObject) session.getAttribute("CART"); //cart.setAttribute
-                if (cart != null) {
-                    //3. Cust gets items
-                    Map<String, Integer> items = cart.getItems(); //ngan chua do 
-                    if (items != null) {
-        %>
+
+        <c:set var="cart" value="${sessionScope.CART.items}" />
         <form action="DispatchServlet">
             <table border="1">
                 <thead>
@@ -39,27 +30,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%
-                        int count = 0;
-                        for (String key : items.keySet()) {
-                    %>
-                    <tr>
-                        <td>
-                            <%= ++count%>
-                        </td>
-                        <td>
-                            <%= key%>
-                        </td>
-                        <td>
-                            <%= items.get(key)%>
-                        </td>
-                        <td>
-                            <input type="checkbox" name="chkItem" value="<%= key%>" />
-                        </td>
-                    </tr>
-                    <%
-                        } //end get key value of each items
-                    %>
+                    <c:forEach items="${cart}" var="cart" varStatus="counter">
+                        <tr>
+                            <td>
+                                ${counter.count}
+                            </td>
+                            <td>
+                                ${cart.key}
+                            </td>
+                            <td>
+                                ${cart.value}
+                            </td>
+                            <td>
+                                <input type="checkbox" name="chkItem" value="${cart.key}" />
+                            </td>
+                        </tr>
+                    </c:forEach>
                     <tr>
                         <td colspan="3"> 
                             <a href="DispatchServlet?btAction=View Book">Add more book to your cart</a>
@@ -71,7 +57,7 @@
                 </tbody>
             </table>        
         </form>
-
+        
         <form action="DispatchServlet" method="POST">
             Name* <input type="text" name="txtName" value="" /><br/>
             Address* <textarea name="txtAddress" value="" 
@@ -79,13 +65,7 @@
                                style="overflow-y: scroll; resize: none"></textarea><br/>
             <input type="submit" value="Checkout" name="btAction" />
         </form>
-        <%
-                        return;
-                    } //end items have existed
-                } //cart is existed
-            } //cart place must be existed
-%>
-        <h2>No cart is existed</h2>
+        
         <a href="DispatchServlet?btAction=View Book">Back to shopping</a>
     </body>
 </html>

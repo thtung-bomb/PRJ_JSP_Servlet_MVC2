@@ -12,6 +12,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Book Shop Page</title>
+        <style>
+            .pagination a.active {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            .pagination a:hover:not(.active) {background-color: #ddd;}
+        </style>
     </head>
     <body> 
 
@@ -78,23 +86,29 @@
                     </c:forEach>    
                 </tbody>
             </table>
+            <br/>
             <form action="DispatchServlet">
                 <input type="submit" value="View Your Cart" name="btAction" />
             </form>
-            Page: 
-            <c:forEach var="pageIndex" begin="1" end="${pageCount}" varStatus="counter" >
-                <c:url var="pageUrl" value="DispatchServlet?btAction=View Book" >
-                    <c:param name="pageNumber" value="${counter.count}" />
-                    <c:param name="sizeNumber" value="${pageSize}" />
-                </c:url>
-                <c:if test="${pageNumber == counter.count}" >
-                    ${counter.count}
-                </c:if>
-                <c:if test="${pageNumber != counter.count}" >
-                    <a href="${pageUrl}" >${counter.count}</a>
-                </c:if>
-                |
-            </c:forEach>
+            <ul class="pagination">
+                
+                Page: 
+                <c:forEach var="pageIndex" begin="1" end="${pageCount}" varStatus="counter" >
+                    <c:url var="pageUrl" value="DispatchServlet?btAction=View Book" >
+                        <c:param name="pageNumber" value="${counter.count}" />
+                        <c:param name="sizeNumber" value="${pageSize}" />
+                    </c:url>
+                    <c:if test="${pageNumber == counter.count}" >
+                        ${counter.count}
+                    </c:if>
+                    <c:if test="${pageNumber != counter.count}" >
+                        <a href="${pageUrl}" >${counter.count}</a>
+                    </c:if>
+                    |
+                </c:forEach>
+
+            </ul>
+
         </c:if>
 
     </c:if>
