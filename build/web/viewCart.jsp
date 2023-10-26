@@ -54,6 +54,7 @@
                             <input type="submit" value="Remove Selected Items" name="btAction" />
                         </td>
                     </tr>
+                    
                 </tbody>
             </table>        
         </form>
