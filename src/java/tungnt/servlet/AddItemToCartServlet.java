@@ -6,6 +6,9 @@
 package tungnt.servlet;
 
 import java.io.IOException;
+import java.util.Properties;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +28,7 @@ public class AddItemToCartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        
         try {
             //1. Cus -> cart place
             HttpSession session = request.getSession(); //check kiem tra
@@ -35,7 +38,7 @@ public class AddItemToCartServlet extends HttpServlet {
             if (cart == null) {
                 cart = new CartObject();
             } //cart has init
-
+            
             //3. cus drop item to cart
             String itemId = request.getParameter("dllBook");
             String quantityRequest = request.getParameter("txtQuantity");
@@ -43,7 +46,7 @@ public class AddItemToCartServlet extends HttpServlet {
                 int quantity = Integer.parseInt(quantityRequest);
                 cart.addItemToCart(itemId, quantity);
             } else {
-                return;
+//                url = siteMaps.getProperty(MyApplicationConstain.ViewShop.SHOP_PAGE);
             }
             //cart.addItemToCart(itemId, 1); //form tinh~
             //items must be setAttribute
@@ -54,12 +57,11 @@ public class AddItemToCartServlet extends HttpServlet {
             //chua method <-> model 
         } finally {
             //responde tra ve mat gi do moi nghi den fw
-            String urlRewiting = "DispatchServlet"
+//            response.sendRedirect(urlRewiting);
+            String urlRewriting = "DispatchServlet"
                     + "?btAction=View Book";
-            response.sendRedirect(urlRewiting);
-
-//            RequestDispatcher rd = request.getRequestDispatcher(url);
-//            rd.forward(request, response);
+            RequestDispatcher rd = request.getRequestDispatcher(urlRewriting);
+            rd.forward(request, response);
         }
     }
 

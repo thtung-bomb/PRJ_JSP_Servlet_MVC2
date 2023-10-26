@@ -23,7 +23,7 @@ import tungnt.util.MyApplicationConstain;
 @WebServlet(name = "DispatchServlet", urlPatterns = {"/DispatchServlet"})
 public class DispatchServlet extends HttpServlet {
     //thay doi moi dung addnotation
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -32,17 +32,15 @@ public class DispatchServlet extends HttpServlet {
         Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
         //1. Which button did user click?
         String button = request.getParameter("btAction");
-
+        
         String url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.LOGIN_PAGE);
-
+        
         try {
             if (button == null) { //welcome file trigger
                 url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.START_UP_CONTROLLER);
             } else if (button.equals("Login")) { //map tinh nang moi vao ben trong dieu phoi/dispatch
-//                url = LOGIN_CONTROLLER;
                 url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.LOGIN_CONTROLLER);
             } else if (button.equals("search")) {
-//                url = SEARCH_LASTNAME_CONTROLLER;
                 url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.SEARCH_LASTNAME_CONTROLLER);
             } else if (button.equals("delete")) {
                 url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.DELETE_ACCOUNT_CONTROLLER);

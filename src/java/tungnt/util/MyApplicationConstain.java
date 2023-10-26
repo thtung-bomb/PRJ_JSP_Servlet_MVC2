@@ -11,6 +11,14 @@ package tungnt.util;
  */
 public class MyApplicationConstain {
 
+    public static class ShoppingFeatures {
+
+        public static int DEFAULT_PAGE_NUMBER = 1;
+        public static final int DEFAULT_SIZE_NUMBER = 10;
+        public static final String BOOK_PAGE = "viewShop";
+
+    }
+
     public class DispatchFeature {
 
         public static final String LOGIN_PAGE = "";
@@ -54,7 +62,7 @@ public class MyApplicationConstain {
     }
 
     public class CheckoutFeature {
-        
+
         public static final String CHECKOUT_PAGE = "checkoutPage";
 
     }

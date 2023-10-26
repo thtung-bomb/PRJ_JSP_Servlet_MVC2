@@ -10,25 +10,75 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.naming.NamingException;
+import tungnt.paging.Page;
 import tungnt.util.DBHelper;
+import tungnt.util.MyApplicationConstain;
 
 /**
  *
  * @author Thanh Tung
  */
 public class ProductDAO implements Serializable {
-
+    
     private List<ProductDTO> books;
-
+    
     public List<ProductDTO> getBooks() {
         return books;
     }
+    
+    public Page<ProductDTO> getAvailableProducts(String page, String size)
+            throws SQLException, NamingException, ClassNotFoundException {
+        Connection con = null;
+        List<ProductDTO> products = null;
+        
+        int pageNumber;
+        if (page == null || page.trim().isEmpty()) {
+            pageNumber = MyApplicationConstain.ShoppingFeatures.DEFAULT_PAGE_NUMBER;
+        } else {
+            pageNumber = Integer.parseInt(page);
+        }
 
-    public void getAllBook()
+        int sizeNumber;
+        if (size == null || size.trim().isEmpty()) {
+            sizeNumber = MyApplicationConstain.ShoppingFeatures.DEFAULT_SIZE_NUMBER;
+        } else {
+            sizeNumber = Integer.parseInt(size);
+        }
+
+        try {
+            con = DBHelper.createConnection();
+
+            if (con != null) {
+                this.getAllBook(pageNumber, sizeNumber);
+                products = this.getBooks();
+
+                long numberOfProducts = this.count(con);
+                int numberOfPages = (int) Math.ceil((double) numberOfProducts / sizeNumber);
+
+                for (ProductDTO dto : products) {
+//                    float roundOff = (float) (Math.round(dto.getUnitprice() * 100.0) / 100.0);
+                    dto.getUnitprice();
+                }
+
+                Page<ProductDTO> result = new Page<>(products, numberOfPages);
+
+                return result;
+            }
+        } finally {
+            if (con != null) {
+                con.close();
+            }
+        }
+
+        return null;
+    }
+
+    public void getAllBook(int page, int size)
             throws SQLException, ClassNotFoundException, NamingException { //bat loi con.close();
 
         Connection con = null;//khai bao
@@ -42,9 +92,15 @@ public class ProductDAO implements Serializable {
                 //2. Create SQL String
                 String sql = "Select id, name, quantity, unitprice, status "
                         + "From Product "
-                        + "Where status = 1 And quantity > 0";
+                        + "Where status = 1 And quantity > 0 "
+                        + "Order by name "
+                        + "Offset ? Rows "
+                        + "Fetch Next ? Rows Only";
                 //3. Create Statement Object
                 stm = con.prepareStatement(sql);
+                stm.setInt(1, size * (page - 1));
+                stm.setInt(2, size);
+
                 //4. Excute Query
                 rs = stm.executeQuery();
                 //5. Process 
@@ -215,6 +271,34 @@ public class ProductDAO implements Serializable {
             }
         }
         return result;
+    }
+
+    public long count(Connection con) throws SQLException {
+        Statement stm = null;
+        ResultSet rs = null;
+        try {
+            String sql = "Select count(id) as total "
+                    + "From [Product] "
+                    + "Where status=1 and quantity > 0";
+
+            stm = con.createStatement();
+            rs = stm.executeQuery(sql);
+
+            if (rs.next()) {
+                long total = rs.getLong("total");
+
+                return total;
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+        }
+
+        return 0;
     }
 
 }

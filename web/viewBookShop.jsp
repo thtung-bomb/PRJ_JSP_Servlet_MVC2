@@ -6,7 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="t"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,57 +17,88 @@
 
         <h1>Book Shop</h1>
 
-        <c:set var="products" value="${requestScope.PRODUCT}" />
-        <c:if test="${not empty products}">
+        <c:set var="productPage" value="${requestScope.PRODUCTS_PAGE}" />
+        <c:if test="${not empty productPage.content}">
+            <c:set var="products" value="${productPage.content}" />
+            <c:set var="pageCount" value="${productPage.numberOfPages}" />
+            <%-- get page information --%>
+            <c:if test="${not empty param.pageNumber}" >
+                <c:set var="pageNumber" value="${param.pageNumber}" />
+            </c:if>
+            <c:if test="${empty param.pageNumber}" >
+                <c:set var="pageNumber" value="${1}" />
+            </c:if>
+
+            <%-- set size number --%>
+            <c:if test="${empty param.sizeNumber}" >
+                <c:set var="pageSize" value="${10}" />
+            </c:if>
+            <c:if test="${not empty param.sizeNumber}" >
+                <c:set var="pageSize" value="${param.sizeNumber}" />
+            </c:if>
+
+            <c:if test="${not empty products}">
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>NO.</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <c:forEach items="${products}" var="product" varStatus="counter">
+                        <form action="DispatchServlet">
+                            <tr>
+                                <td>
+                                    ${counter.count}
+                                </td>
+                                <td>
+                                    <input type="hidden" name="dllBook" value="${product.id}" />
+                                    ${product.name}
+                                </td>
+                                <td>    
+                                    ${product.unitprice}
+                                </td>
+                                <td>
+                                    <input style="text-align:right; width: 70px;" 
+                                           type="number" name="txtQuantity" 
+                                           min="0" max="${product.quantity}" 
+                                           value="0"/>
+                                </td>
+                                <td>
+                                    <input type="hidden" name="pageNumber" value="${pageNumber}" />
+                                    <input type="submit" value="AddBookToCart" name="btAction" />
+                                </td>
+                            </tr>
+                        </form>   
+                    </c:forEach>    
+                </tbody>
+            </table>
             <form action="DispatchServlet">
                 <input type="submit" value="View Your Cart" name="btAction" />
             </form>
-            <table border="1">
+            Page: 
+            <c:forEach var="pageIndex" begin="1" end="${pageCount}" varStatus="counter" >
+                <c:url var="pageUrl" value="DispatchServlet?btAction=View Book" >
+                    <c:param name="pageNumber" value="${counter.count}" />
+                    <c:param name="sizeNumber" value="${pageSize}" />
+                </c:url>
+                <c:if test="${pageNumber == counter.count}" >
+                    ${counter.count}
+                </c:if>
+                <c:if test="${pageNumber != counter.count}" >
+                    <a href="${pageUrl}" >${counter.count}</a>
+                </c:if>
+                |
+            </c:forEach>
+        </c:if>
 
-                <thead>
-                    <tr>
-                        <th>NO.</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <c:forEach items="${products}" var="product" varStatus="counter">
-                    <form action="DispatchServlet">
-                        <tr loading="lazy">
-                            <td>
-                                ${counter.count}
-                            </td>
-                            <td>
-                                <input type="hidden" name="dllBook" value="${product.id}" />
-                                ${product.name}
-                            </td>
-                            <td>    
-                                ${product.unitprice}
-                            </td>
-                            <td>
-                                <input style="text-align:right; width: 70px;" 
-                                       type="number" name="txtQuantity" 
-                                       min="0" max="${product.quantity}" 
-                                       value="0"/>
-                            </td>
-                            <td>
-                                <input type="submit" value="AddBookToCart" name="btAction" />
-                            </td>
-                        </tr>
-                    </form>   
-                </c:forEach>    
-            </tbody>
-        </table>
     </c:if>
 
-    <c:if test="${empty products}">
-        <H1>NO RECORDS TO BE DISPLAYED !!!</H1>
-        <a href="login.html">Back to Home page</a>
-    </c:if>
 
 </body>
 </html>

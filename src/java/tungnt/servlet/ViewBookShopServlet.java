@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tungnt.Product.ProductDAO;
 import tungnt.Product.ProductDTO;
+import tungnt.paging.Page;
 import tungnt.util.MyApplicationConstain;
 
 /**
@@ -29,7 +30,6 @@ import tungnt.util.MyApplicationConstain;
 @WebServlet(name = "viewBookShopServlet", urlPatterns = {"/viewBookShopServlet"})
 public class ViewBookShopServlet extends HttpServlet {
 
-//    private final String BOOK_SHOP = "viewBookShop.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -38,13 +38,14 @@ public class ViewBookShopServlet extends HttpServlet {
         ProductDAO dao = new ProductDAO();
         String url = siteMaps.getProperty(MyApplicationConstain.ViewShop.SHOP_PAGE);
         try {
-//            HttpSession session = request.getSession();
-            dao.getAllBook();
-
-            List<ProductDTO> listBooks = dao.getBooks();
-
-            request.setAttribute("PRODUCT", listBooks);
-
+            String page = request.getParameter("pageNumber");
+            String size = request.getParameter("sizeNumber");
+            Page<ProductDTO> productsPage = dao.getAvailableProducts(page, size);
+            
+            if (productsPage != null && !productsPage.getContent().isEmpty()) {
+                request.setAttribute("PRODUCTS_PAGE", productsPage);
+            }
+            
         } catch (NamingException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
