@@ -31,8 +31,7 @@ public class AddItemToCartServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         ServletContext context = request.getServletContext();
         Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
-        String urlRewriting = "DispatchServlet"
-                + "?btAction=View Book";
+        String urlRewriting = siteMaps.getProperty(MyApplicationConstain.ShoppingFeatures.BOOK_CONTROLLER);
         try {
             //1. Cus -> cart place
             HttpSession session = request.getSession(); //check kiem tra

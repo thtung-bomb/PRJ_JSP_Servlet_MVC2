@@ -13,17 +13,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/WEB-INF/siteMaps.properties</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/util/MyApplicationConstain.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/Product/ProductDAO.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/Product/ProductDTO.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/Order/OrderDAO.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/OrderDetail/OrderDetailDAO.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/servlet/CheckoutServlet.java</file>
             <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/WEB-INF/web.xml</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/login.html</file>
             <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/Listener/MyServletListener.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/servlet/DispatchServlet.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/OrderDetail/OrderDetailDTO.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/util/StringHelper.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/filter/DispatcherFilter.java</file>
         </group>
     </open-files>
 </project-private>

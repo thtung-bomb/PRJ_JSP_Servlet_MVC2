@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tungnt.Cart.CartObject;
+import tungnt.util.MyApplicationConstain;
 
 /**
  *
@@ -51,18 +52,19 @@ public class RemoveCartServlet extends HttpServlet {
                             for (String item : selectedItems) {
                                 cart.removeItemFromCart(item);
                             }
-                        session.setAttribute("CART", cart);
+                            session.setAttribute("CART", cart);
                         } //cust must be chosen
                     } //end items have existed
                 } //end cart has existed
             } //end cart place has exist
         } catch (Exception e) {
-
+            
         } finally {
             //6. refresh --> call previous function again (View Your Cart)
             //--> using urlRewring
-            String urlRewiting = "DispatchServlet"
-                    + "?btAction=View Your Cart";
+            String urlRewiting = MyApplicationConstain.RemoveItemsinCart.CART_PAGE;
+//                    "DispatchServlet"
+//                    + "?btAction=View Your Cart";
             //dung sendRedirect: object con luu tru, trung ten btAction
             response.sendRedirect(urlRewiting);
         }

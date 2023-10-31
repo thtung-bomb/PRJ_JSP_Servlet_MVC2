@@ -12,7 +12,7 @@ and open the template in the editor.
     </head>
     <body>
         <h1>Login Page</h1>
-        <form action="DispatchServlet" method="POST">
+        <form action="loginController" method="POST">
             Username <input type="text" name="txtUsername" value="" />
             <br/> <br/>
             Password <input type="password" name="txtPassword" value="" />
@@ -20,20 +20,8 @@ and open the template in the editor.
             <input type="submit" value="Login" name="btAction" />
             <input type="reset" value="Reset" />
         </form>
-        <a href="register.html">Click here to sign up</a>
-        <!--       
-        <form action="DispatchServlet">
-        <input type="submit" value="View Book" name="btAction" />
-        </form>-->
-
-        <a href="DispatchServlet?btAction=View Book">View Book Shop</a>
-
-        <!-- 
-        1. tao view
-        2. map tinh nang moi vao trong dieu phoi dispatch
-        3. tao servlet chuc nang 
-        -->
-
-
+        <a href="createAccount">Click here to sign up</a>
+        <a href="viewBookController">View Book Shop</a>
+        
     </body>
 </html>

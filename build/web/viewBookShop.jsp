@@ -59,7 +59,7 @@
 
                     <tbody>
                         <c:forEach items="${products}" var="product" varStatus="counter">
-                        <form action="DispatchServlet">
+                        <form action="addItemToCartController">
                             <tr>
                                 <td>
                                     ${counter.count}
@@ -87,14 +87,14 @@
                 </tbody>
             </table>
             <br/>
-            <form action="DispatchServlet">
+            <form action="viewCartPage">
                 <input type="submit" value="View Your Cart" name="btAction" />
             </form>
             <ul class="pagination">
                 
                 Page: 
                 <c:forEach var="pageIndex" begin="1" end="${pageCount}" varStatus="counter" >
-                    <c:url var="pageUrl" value="DispatchServlet?btAction=View Book" >
+                    <c:url var="pageUrl" value="viewBookController" >
                         <c:param name="pageNumber" value="${counter.count}" />
                         <c:param name="sizeNumber" value="${pageSize}" />
                     </c:url>

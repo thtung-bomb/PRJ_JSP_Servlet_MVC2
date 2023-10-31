@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tungnt.registration.RegistrationDAO;
+import tungnt.registration.RegistrationDTO;
 import tungnt.util.MyApplicationConstain;
 
 /**
@@ -50,12 +51,13 @@ public class UpdateAccountServlet extends HttpServlet {
         String searchValue = request.getParameter("lastSearch");
         boolean isAdmin = false;
         String url = siteMaps.getProperty(MyApplicationConstain.ErrorsPage.ERROR_PAGE);
-        
+
         if (request.getParameter("chkRole") != null) {
             isAdmin = true;
         }
 
         try {
+            RegistrationDTO user = (RegistrationDTO) request.getAttribute("USER_INFOR");
             //2. Call DAO
             //2.1 create new DAO
             RegistrationDAO dao = new RegistrationDAO();
@@ -64,9 +66,14 @@ public class UpdateAccountServlet extends HttpServlet {
             //3. process result
             if (result) {
                 //if true => refresh page and call function (Search) url rewriting
-                url = "DispatchServlet"
+                url = MyApplicationConstain.UpdateAccountFeature.UPDATE_ACTION
                         + "?btAction=search"
                         + "&txtSearchValue=" + searchValue;
+
+                if (user.getUsername().equals(username)) {
+                    url = MyApplicationConstain.DeleteAccountFeature.LOGOUT_ACTION;
+                }
+                
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

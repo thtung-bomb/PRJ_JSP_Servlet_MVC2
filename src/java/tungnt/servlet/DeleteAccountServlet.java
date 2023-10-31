@@ -16,7 +16,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import tungnt.registration.RegistrationDAO;
+import tungnt.registration.RegistrationDTO;
 import tungnt.util.MyApplicationConstain;
 
 /**
@@ -39,7 +41,7 @@ public class DeleteAccountServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        
         //
         ServletContext context = this.getServletContext();
         Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
@@ -50,6 +52,7 @@ public class DeleteAccountServlet extends HttpServlet {
         String url = siteMaps.getProperty(MyApplicationConstain.ErrorsPage.ERROR_PAGE);
 
         try {
+            RegistrationDTO user = (RegistrationDTO) request.getAttribute("USER_INFOR");
             //2. Call DAO
             //2.1 New DAO
             RegistrationDAO dao = new RegistrationDAO();
@@ -58,10 +61,13 @@ public class DeleteAccountServlet extends HttpServlet {
             //3. process result
             if (result) {
                 //.refresh --> call previous function (Search) --> url rewriting
-                url = "DispatchServlet"
+                url = MyApplicationConstain.SearchLastnameFeaturee.SEARCH_CONTROLLER
                         + "?btAction=search"
                         + "&txtSearchValue=" + searchValue; //btaction copy trong dispatch servlet
                 //form search truyen ve 1 parameter
+                if (user.getUsername().equals(username)) {
+                    url = MyApplicationConstain.DeleteAccountFeature.LOGOUT_ACTION;
+                }
             } //end delete account is successful
         } catch (NamingException ex) {
             ex.printStackTrace();

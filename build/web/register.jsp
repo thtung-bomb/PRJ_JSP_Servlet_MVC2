@@ -16,7 +16,7 @@
     <body>
         <a href="login.html">Back to Home Page</a>
         <h1>Create Account</h1>
-        <form action="DispatchServlet" method="POST">
+        <form action="createAccountController" method="POST">
             <c:set var="errors" value="${requestScope.CREATE_ERRORS}" />
             Username* <input type="text" name="txtUsername" value="${param.txtUsername}" /> (6-30 characters) <br/>
             <c:if test="${not empty errors.usernameLengthError}">

@@ -31,23 +31,20 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         //0.
-        ServletContext context = this.getServletContext();
+        ServletContext context = request.getServletContext();
         Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
 //        String username = request.getParameter("");
         String url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.LOGIN_PAGE);
-        
         try {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
             Cookie[] cookies = request.getCookies();
             for (Cookie cookie : cookies) {
                 cookie.setMaxAge(0);
                 response.addCookie(cookie);
             }
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                session.invalidate();
-            }
-        } catch (ClassCircularityError ex) {
-            ex.printStackTrace();
         } finally {
             response.sendRedirect(url);
         }

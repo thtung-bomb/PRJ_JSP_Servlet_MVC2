@@ -25,10 +25,7 @@ import tungnt.util.MyApplicationConstain;
  * @author Thanh Tung
  */
 public class LoginServlet extends HttpServlet {
-
-//    private final String SEARCH_PAGE = "searchPage";
-//    private final String INVALID_PAGE = "invalidPage";
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,7 +42,7 @@ public class LoginServlet extends HttpServlet {
         Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
-        String url = siteMaps.getProperty(MyApplicationConstain.LoginFeature.INVALID_PAGE);
+        String url = siteMaps.getProperty(MyApplicationConstain.LoginFeature.LOGIN_PAGE);
         
         try {
             //ghi o phia client                 

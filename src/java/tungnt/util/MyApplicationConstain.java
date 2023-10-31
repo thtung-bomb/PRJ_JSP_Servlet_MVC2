@@ -16,12 +16,19 @@ public class MyApplicationConstain {
         public static int DEFAULT_PAGE_NUMBER = 1;
         public static final int DEFAULT_SIZE_NUMBER = 10;
         public static final String BOOK_PAGE = "viewShop";
+        public static final String BOOK_CONTROLLER = "viewBookController";
+
+    }
+
+    public static class RemoveItemsinCart {
+
+        public static final String CART_PAGE = "viewCartPage";
 
     }
 
     public class DispatchFeature {
 
-        public static final String LOGIN_PAGE = "";
+        public static final String LOGIN_PAGE = "loginPage";
         public static final String LOGIN_CONTROLLER = "loginController";
         public static final String SEARCH_LASTNAME_CONTROLLER = "searchController";
         public static final String DELETE_ACCOUNT_CONTROLLER = "deleteAccountController";
@@ -39,14 +46,28 @@ public class MyApplicationConstain {
 
     public class LoginFeature {
 
+        public static final String LOGIN_PAGE = "loginPage";
         public static final String SEARCH_PAGE = "searchPage";
         public static final String INVALID_PAGE = "invalidPage";
+
+    }
+
+    public class DeleteAccountFeature {
+
+        public static final String LOGOUT_ACTION = "logoutController";
+
+    }
+
+    public class UpdateAccountFeature {
+
+        public static final String UPDATE_ACTION = "searchController";
 
     }
 
     public class SearchLastnameFeaturee {
 
         public static final String RESULT_SEARCH_PAGE = "searchPage";
+        public static final String SEARCH_CONTROLLER = "searchController";
 
     }
 
@@ -59,8 +80,9 @@ public class MyApplicationConstain {
     public class ViewShop {
 
         public static final String SHOP_PAGE = "viewShop";
-    }
 
+    }
+    
     public class CheckoutFeature {
 
         public static final String CHECKOUT_PAGE = "checkoutPage";

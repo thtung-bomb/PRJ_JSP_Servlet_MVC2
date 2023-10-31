@@ -17,14 +17,14 @@
     <body>
         <a href="login.html">Back to Home Page</a>
         <h1>Book Store</h1>
-
+        
         <c:set var="cart" value="${sessionScope.CART.items}" />
         <c:if test="${empty cart}">
             <h1>Cart is empty</h1>
-            <a href="DispatchServlet?btAction=View Book">Back to shopping</a>
+            <a href="viewBookController">Back to shopping</a>
         </c:if>
         <c:if test="${not empty cart}">
-            <form action="DispatchServlet">
+            <form action="removeCartController">
                 <table border="1">
                     <thead>
                         <tr>
@@ -53,7 +53,7 @@
                         </c:forEach>
                         <tr>
                             <td colspan="3"> 
-                                <a href="DispatchServlet?btAction=View Book">Add more book to your cart</a>
+                                <a href="viewBookController">Add more book to your cart</a>
                             </td>
                             <td>
                                 <input type="submit" value="Remove Selected Items" name="btAction" />
@@ -63,7 +63,7 @@
                 </table>        
             </form>
 
-            <form action="DispatchServlet" method="POST">
+            <form action="checkoutController" method="POST">
                 Name* <input type="text" name="txtName" value="" /><br/>
                 Address* <textarea name="txtAddress" value="" 
                                    rows="5" cols="20"
