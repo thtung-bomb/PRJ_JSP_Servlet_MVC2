@@ -24,18 +24,18 @@ import tungnt.util.MyApplicationConstain;
  * @author Thanh Tung
  */
 public class ProductDAO implements Serializable {
-    
+
     private List<ProductDTO> books;
-    
+
     public List<ProductDTO> getBooks() {
         return books;
     }
-    
+
     public Page<ProductDTO> getAvailableProducts(String page, String size)
             throws SQLException, NamingException, ClassNotFoundException {
         Connection con = null;
         List<ProductDTO> products = null;
-        
+
         int pageNumber;
         if (page == null || page.trim().isEmpty()) {
             pageNumber = MyApplicationConstain.ShoppingFeatures.DEFAULT_PAGE_NUMBER;
@@ -183,9 +183,9 @@ public class ProductDAO implements Serializable {
         ResultSet rs = null;
 
         try {
-
+            
             con = DBHelper.createConnection();
-
+            
             if (con != null) {
                 StringBuilder sql = new StringBuilder("SELECT id, name, quantity, unitprice, status "
                         + " FROM Product "
@@ -198,7 +198,7 @@ public class ProductDAO implements Serializable {
                 }
                 sql.append(")");
                 stm = con.prepareStatement(sql.toString());
-
+                
                 // Bind each ID as a parameter
                 int parameterIndex = 1;
                 for (String id : items) {
@@ -272,7 +272,7 @@ public class ProductDAO implements Serializable {
         }
         return result;
     }
-
+    
     public long count(Connection con) throws SQLException {
         Statement stm = null;
         ResultSet rs = null;
@@ -299,6 +299,60 @@ public class ProductDAO implements Serializable {
         }
 
         return 0;
+    }
+    
+    public ProductDTO getBooksById(String itemId)
+            throws SQLException, ClassNotFoundException, NamingException {
+        
+        List<ProductDTO> listBook = null;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ProductDTO result = null;
+        
+        try {
+            con = DBHelper.createConnection();
+            if (con != null) {
+                //2. Create sql string
+                String sql = "Select id, name, quantity, unitprice, status "
+                        + " FROM Product "
+                        + " WHERE id = ?";
+                //3. Create statement Object
+                stm = con.prepareStatement(sql);
+                stm.setString(1, itemId);
+
+                //4. Execute Statement
+                rs = stm.executeQuery();
+
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    int quantity = rs.getInt("quantity");
+                    float unitprice = rs.getFloat("unitprice");
+                    boolean status = rs.getBoolean("status");
+                    ProductDTO dto = new ProductDTO(itemId, name, quantity, unitprice, status);
+                    
+                    if (listBook == null) {
+                        listBook = new ArrayList<>();
+                    }
+                    
+                    listBook.add(dto);
+                    
+                    result = dto;
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+
+        return result;
     }
 
 }

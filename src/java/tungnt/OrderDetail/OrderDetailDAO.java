@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
 import tungnt.Cart.CartObject;
+import tungnt.Order.OrderCheckoutError;
 import tungnt.Order.OrderDAO;
 import tungnt.Order.OrderDTO;
 import tungnt.Product.ProductDAO;
@@ -53,7 +54,7 @@ public class OrderDetailDAO implements Serializable {
                     result = true;
                 }
             }
-            
+
         } finally {
             if (rs != null) {
                 rs.close();
@@ -67,8 +68,8 @@ public class OrderDetailDAO implements Serializable {
         }
         return result;
     }
-
-    public String checkout(CartObject cart, String name, String address)
+    
+    public String checkout(CartObject cart, String name, String address, OrderCheckoutError erros)
             throws NamingException, SQLException, ClassNotFoundException {
         boolean validate = true;
         OrderDAO orderDAO = new OrderDAO();
@@ -99,6 +100,7 @@ public class OrderDetailDAO implements Serializable {
                     int cartQuantity = items.get(productId);
                     //check if product has no sufficient quantity
                     if (productQuantity < cartQuantity) {
+                        erros.setInvalidQuantityError("Product name: " + product.getName() + " does not have enough quantity");
                         con.rollback();
                         return null;
                     }

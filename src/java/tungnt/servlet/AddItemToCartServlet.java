@@ -6,7 +6,9 @@
 package tungnt.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Properties;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tungnt.Cart.CartObject;
+import tungnt.Order.OrderCheckoutError;
+import tungnt.Product.ProductDAO;
+import tungnt.Product.ProductDTO;
 import tungnt.util.MyApplicationConstain;
 
 /**
@@ -25,13 +30,18 @@ import tungnt.util.MyApplicationConstain;
 @WebServlet(name = "AddItemToCartServlet", urlPatterns = {"/AddItemToCartServlet"})
 public class AddItemToCartServlet extends HttpServlet {
 
+    private final String QUANTITY_ERROR = "Quantity must not be empty";
+
     //b3 tao servlet chuc nang
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        ProductDAO dao = new ProductDAO();
         ServletContext context = request.getServletContext();
         Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
         String urlRewriting = siteMaps.getProperty(MyApplicationConstain.ShoppingFeatures.BOOK_CONTROLLER);
+        OrderCheckoutError errors = new OrderCheckoutError();
+        boolean foundError = false;
         try {
             //1. Cus -> cart place
             HttpSession session = request.getSession(); //check kiem tra
@@ -45,19 +55,27 @@ public class AddItemToCartServlet extends HttpServlet {
             //3. cus drop item to cart
             String itemId = request.getParameter("dllBook");
             String quantityRequest = request.getParameter("txtQuantity");
+//            ProductDTO dto = dao.getBooksById(itemId);
             if (quantityRequest != null && !"".equals(quantityRequest)) {
                 int quantity = Integer.parseInt(quantityRequest);
                 cart.addItemToCart(itemId, quantity);
+                //items must be setAttribute
+                //name copy from cart = (CartObject)
+                session.setAttribute("CART", cart);
             } else {
-                urlRewriting = siteMaps.getProperty(MyApplicationConstain.ErrorsPage.ERROR_PAGE);
+                foundError = true;
+                errors.setInvalidQuantityError(QUANTITY_ERROR);
             }
-            //items must be setAttribute
-            //name copy from cart = (CartObject)
-            session.setAttribute("CART", cart);
+            
+            if (foundError) {
+                request.setAttribute("CREATE_ERROR", errors);
+            }
 
             //4. Customer goes to shopping -> returned BookStore.html
             //chua method <-> model 
-        } finally {
+        } /*catch (SQLException | ClassNotFoundException | NamingException ex) {
+            log(ex.getMessage());
+        } */ finally {
             //responde tra ve mat gi do moi nghi den fw
 //            response.sendRedirect(urlRewiting);
 

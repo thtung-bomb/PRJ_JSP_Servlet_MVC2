@@ -24,6 +24,11 @@
             <a href="viewBookController">Back to shopping</a>
         </c:if>
         <c:if test="${not empty cart}">
+            <c:set var="errors" value="${requestScope.CHECKOUT_ERROR}" />
+            ${errors.invalidQuantityError}
+            <c:if test="${not empty errors.invalidQuantityError}">
+                ${errors.invalidQuantityError}
+            </c:if>
             <form action="removeCartController">
                 <table border="1">
                     <thead>
@@ -64,11 +69,23 @@
             </form>
 
             <form action="checkoutController" method="POST">
-                Name* <input type="text" name="txtName" value="" /><br/>
-                Address* <textarea name="txtAddress" value="" 
+                Name* <input type="text" name="txtName" value="${param.txtName}" /><br/>
+                <c:if test="${not empty errors.nameLengError}">
+                    <font color="red">
+                    ${errors.nameLengError}
+                    </font>
+                    <br/>
+                </c:if>
+                Address* <textarea name="txtAddress" value="${param.txtAddress}" 
                                    rows="5" cols="20"
                                    style="overflow-y: scroll; resize: none"></textarea><br/>
                 <input type="submit" value="Checkout" name="btAction" />
+                <c:if test="${not empty errors.addressLengthError}">
+                    <font color="red">
+                    ${errors.addressLengthError}
+                    </font>
+                    <br/>
+                </c:if>
             </form>
         </c:if>
 

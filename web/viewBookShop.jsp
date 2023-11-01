@@ -24,7 +24,7 @@
     <body> 
 
         <h1>Book Shop</h1>
-
+        <c:set var="error" value="${requestScope.CREATE_ERROR}" />
         <c:set var="productPage" value="${requestScope.PRODUCTS_PAGE}" />
         <c:if test="${not empty productPage.content}">
             <c:set var="products" value="${productPage.content}" />
@@ -38,13 +38,14 @@
             </c:if>
 
             <%-- set size number --%>
+            <c:set var="pageSize" value="${10}" />
             <c:if test="${empty param.sizeNumber}" >
                 <c:set var="pageSize" value="${10}" />
             </c:if>
             <c:if test="${not empty param.sizeNumber}" >
                 <c:set var="pageSize" value="${param.sizeNumber}" />
             </c:if>
-
+            
             <c:if test="${not empty products}">
                 <table border="1">
                     <thead>
@@ -91,7 +92,6 @@
                 <input type="submit" value="View Your Cart" name="btAction" />
             </form>
             <ul class="pagination">
-                
                 Page: 
                 <c:forEach var="pageIndex" begin="1" end="${pageCount}" varStatus="counter" >
                     <c:url var="pageUrl" value="viewBookController" >
@@ -102,17 +102,15 @@
                         ${counter.count}
                     </c:if>
                     <c:if test="${pageNumber != counter.count}" >
-                        <a href="${pageUrl}" >${counter.count}</a>
+                        <a href="${pageUrl}">${counter.count}</a>
                     </c:if>
                     |
                 </c:forEach>
-
             </ul>
-
+            
         </c:if>
 
     </c:if>
-
 
 </body>
 </html>

@@ -71,7 +71,7 @@ public class OrderDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         boolean result = false;
-        
+
         try {
             con = DBHelper.createConnection();
             if (con != null) {
@@ -147,18 +147,18 @@ public class OrderDAO implements Serializable {
         try {
 
             con = DBHelper.createConnection();
-
+            
             if (con != null) {
-
-                String sql = "Select "
-                        + "From Order "
+                
+                String sql = "Select id, [orderDate], total "
+                        + "From [Order] "
                         + "Where id = ?";
-
+                
                 stm = con.prepareStatement(sql);
                 stm.setString(1, orderId);
-
+                
                 rs = stm.executeQuery();
-
+                
                 if (rs.next()) {
                     Timestamp orderDate = rs.getTimestamp("orderDate");
                     float total = rs.getFloat("total");
@@ -166,7 +166,7 @@ public class OrderDAO implements Serializable {
                     return dto;
                 }
             }
-
+            
         } finally {
             if (rs != null) {
                 rs.close();

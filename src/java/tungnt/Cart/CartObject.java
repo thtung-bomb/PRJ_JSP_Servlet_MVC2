@@ -8,51 +8,54 @@ package tungnt.Cart;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import tungnt.Product.ProductDTO;
 
 /**
  *
  * @author Thanh Tung
  */
 public class CartObject implements Serializable {
-    
+
     private Map<String, Integer> items;
 
     public Map<String, Integer> getItems() {
         return items;
     }
-    
+
     public CartObject() {
     }
-    
+
     public void addItemToCart(String itemID, int quantity) {
+
+//        boolean result = false;
+//        String itemID = dto.getName();
         //1. check item existed
-        
         if (itemID == null) {
             return;
         }
-        
+
         if (itemID.trim().isEmpty()) {
             return;
         }
         if (quantity <= 0) {
             return;
         }
-        
+
         //2. check items existed
         if (this.items == null) {
             this.items = new HashMap<>();
         }
-        
+
         //3. check item existed
         if (this.items.containsKey(itemID)) {
             quantity = quantity + this.items.get(itemID);
         } //end item has already existed
-        
+
         //4. Put item to items
         this.items.put(itemID, quantity);
-        
+
     }
-    
+
     public void removeItemFromCart(String itemID) {
         //phuong thuc nay bo het 
         //1. Check item existed
@@ -75,7 +78,7 @@ public class CartObject implements Serializable {
                 this.items = null;
             }
         }
-    
+
     }
-    
+
 }

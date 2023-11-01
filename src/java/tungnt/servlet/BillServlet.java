@@ -6,6 +6,7 @@
 package tungnt.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Properties;
 import javax.naming.NamingException;
@@ -16,46 +17,61 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import tungnt.Bill.BillObject;
+import tungnt.Order.OrderBLO;
+import tungnt.Order.OrderDAO;
+import tungnt.OrderDetail.OrderDetailDAO;
 import tungnt.Product.ProductDAO;
-import tungnt.Product.ProductDTO;
-import tungnt.paging.Page;
 import tungnt.util.MyApplicationConstain;
 
 /**
  *
  * @author Thanh Tung
  */
-@WebServlet(name = "viewBookShopServlet", urlPatterns = {"/viewBookShopServlet"})
-public class ViewBookShopServlet extends HttpServlet {
-    
+@WebServlet(name = "BillServlet", urlPatterns = {"/BillServlet"})
+public class BillServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ServletContext context = this.getServletContext();
+
+        ServletContext context = request.getServletContext();
         Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
-        ProductDAO dao = new ProductDAO();
-        String url = siteMaps.getProperty(MyApplicationConstain.ViewShop.SHOP_PAGE);
-        
+
+        ProductDAO productDAO = new ProductDAO();
+        OrderDAO orderDao = new OrderDAO();
+        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+        OrderBLO blo = new OrderBLO(productDAO, orderDao, orderDetailDAO);
+
+        String orderId = request.getParameter("orderId");
+        String url = siteMaps.getProperty(MyApplicationConstain.CheckoutFeature.BILL);
         try {
-            String page = request.getParameter("pageNumber");
-            String size = request.getParameter("sizeNumber");
-            Page<ProductDTO> productsPage = dao.getAvailableProducts(page, size);
-            
-            if (productsPage != null && !productsPage.getContent().isEmpty()) {
-                request.setAttribute("PRODUCTS_PAGE", productsPage);
+            BillObject bill = blo.createBill(orderId);
+//            bill.getProductDetail()
+//            bill.getOrder()
+            if (bill != null) {
+                request.setAttribute("BILL", bill);
             }
-            
-        } catch (NamingException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            log(ex.getMessage());
+        } catch (NamingException ex) {
+            log(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            log(ex.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
+        <file>
+            <url>src/java/tungnt/Product/ProductDAO.java</url>
+            <bookmark id="2">
+                <name/>
+                <line>200</line>
+                <key/>
+            </bookmark>
+        </file>
         <file>
             <url>web/search.html</url>
             <bookmark id="1">
@@ -12,11 +20,17 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/WEB-INF/siteMaps.properties</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/WEB-INF/web.xml</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/login.html</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/Listener/MyServletListener.java</file>
-            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/filter/DispatcherFilter.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/servlet/AddItemToCartServlet.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/bill.jsp</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/servlet/ViewBookShopServlet.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/servlet/RemoveCartServlet.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/Cart/CartObject.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/Product/ProductDAO.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/viewCart.jsp</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/servlet/CheckoutServlet.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/OrderDetail/OrderDetailDAO.java</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/web/viewBookShop.jsp</file>
+            <file>file:/D:/Tungnt/Bomb/Semester4/PRJ301/PRJ301_KhanhKT/SE1708MVC2/src/java/tungnt/servlet/BillServlet.java</file>
         </group>
     </open-files>
 </project-private>

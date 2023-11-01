@@ -12,22 +12,22 @@ package tungnt.util;
 public class MyApplicationConstain {
 
     public static class ShoppingFeatures {
-
+        
         public static int DEFAULT_PAGE_NUMBER = 1;
         public static final int DEFAULT_SIZE_NUMBER = 10;
         public static final String BOOK_PAGE = "viewShop";
         public static final String BOOK_CONTROLLER = "viewBookController";
-
+        
     }
 
     public static class RemoveItemsinCart {
-
+        
         public static final String CART_PAGE = "viewCartPage";
-
+        
     }
 
     public class DispatchFeature {
-
+        
         public static final String LOGIN_PAGE = "loginPage";
         public static final String LOGIN_CONTROLLER = "loginController";
         public static final String SEARCH_LASTNAME_CONTROLLER = "searchController";
@@ -41,52 +41,53 @@ public class MyApplicationConstain {
         public static final String CREATE_ACCOUNT_CONTROLLER = "createAccountController";
         public static final String CHECKOUT_CONTROLLER = "checkoutController";
         public static final String VIEW_BOOK_CONTROLLER = "viewBookController";
-
+        
     }
 
     public class LoginFeature {
-
+        
         public static final String LOGIN_PAGE = "loginPage";
         public static final String SEARCH_PAGE = "searchPage";
         public static final String INVALID_PAGE = "invalidPage";
-
+        
     }
 
     public class DeleteAccountFeature {
-
+        
         public static final String LOGOUT_ACTION = "logoutController";
-
+        
     }
 
     public class UpdateAccountFeature {
-
+        
         public static final String UPDATE_ACTION = "searchController";
-
+        
     }
 
     public class SearchLastnameFeaturee {
-
+        
         public static final String RESULT_SEARCH_PAGE = "searchPage";
         public static final String SEARCH_CONTROLLER = "searchController";
-
-    }
-
-    public class ErrorsPage {
-
-        public static final String ERROR_PAGE = "errorpage";
-
-    }
-
-    public class ViewShop {
-
-        public static final String SHOP_PAGE = "viewShop";
-
+        
     }
     
+    public class ErrorsPage {
+        
+        public static final String ERROR_PAGE = "errorpage";
+        
+    }
+    
+    public class ViewShop {
+        
+        public static final String SHOP_PAGE = "viewShop";
+        
+    }
+
     public class CheckoutFeature {
-
-        public static final String CHECKOUT_PAGE = "checkoutPage";
-
+        
+        public static final String BILL = "bill";
+        public static final String BILL_CONTROLLER = "billController";
+            
     }
 
 }

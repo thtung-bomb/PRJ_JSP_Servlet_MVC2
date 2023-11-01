@@ -26,17 +26,17 @@ import javax.servlet.http.HttpServletResponse;
  * @author Thanh Tung
  */
 public class DispatcherFilter implements Filter {
-
+    
     private static final boolean debug = true;
-
+    
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-
+    
     public DispatcherFilter() {
     }
-
+    
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -64,7 +64,7 @@ public class DispatcherFilter implements Filter {
 	}
          */
     }
-
+    
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -89,7 +89,7 @@ public class DispatcherFilter implements Filter {
 	respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
          */
     }
-
+    
     /**
      *
      * @param request The servlet request we are processing
@@ -102,11 +102,11 @@ public class DispatcherFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-
+        
         if (debug) {
             log("DispatcherFilter:doFilter()");
         }
-
+        
         System.out.println("In doFilter()");
         doBeforeProcessing(request, response);
 

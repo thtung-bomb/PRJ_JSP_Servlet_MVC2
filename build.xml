@@ -7,8 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="SE1708MVC2_NTT_Demo" default="default" basedir=".">
-    <description>Builds, tests, and runs the project SE1708MVC2_NTT_Demo.</description>
+<project name="PRJ_Assignment" default="default" basedir=".">
+    <description>Builds, tests, and runs the project PRJ_Assignment.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 

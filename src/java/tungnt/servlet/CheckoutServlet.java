@@ -6,7 +6,9 @@
 package tungnt.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Properties;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tungnt.Cart.CartObject;
+import tungnt.Order.OrderCheckoutError;
 import tungnt.OrderDetail.OrderDetailDAO;
 import tungnt.Product.ProductDAO;
 import tungnt.util.MyApplicationConstain;
@@ -26,45 +29,65 @@ import tungnt.util.MyApplicationConstain;
  */
 @WebServlet(name = "CheckoutServlet", urlPatterns = {"/CheckoutServlet"})
 public class CheckoutServlet extends HttpServlet {
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         ServletContext context = request.getServletContext();
         Properties siteMaps = (Properties) context.getAttribute("SITEMAPS");
-        
+        String url = siteMaps.getProperty(MyApplicationConstain.DispatchFeature.VIEW_CART_PAGE);
+
         ProductDAO dao = new ProductDAO();
+        OrderCheckoutError errors = new OrderCheckoutError();
 //        float unitprice = 0;
-        String url = siteMaps.getProperty(MyApplicationConstain.CheckoutFeature.CHECKOUT_PAGE);
+//        String url = siteMaps.getProperty(MyApplicationConstain.CheckoutFeature.CHECKOUT_PAGE);
         String name = request.getParameter("txtName");
         String address = request.getParameter("txtAddress");
         OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+        boolean foundError = false;
         try {
-            HttpSession session = request.getSession();
-            //get cart
-            CartObject cart = (CartObject) session.getAttribute("CART");
-            if (cart == null) {
-                return;
+            if (name.length() < 2 || name.length() > 30) {
+                foundError = true;
+                errors.setNameLengError("Name is require typing from 2 to 30 characters");
+            }   
+            if (address.length() < 5 || address.length() > 250) {
+                foundError = true;
+                errors.setAddressLengthError("Address is require typing from 5 to 50 characters");
             }
-            //get orderId
-            String orderId = orderDetailDAO.checkout(cart, name, address);
             
-            if (orderId != null) {
-                session.setAttribute("CART", null);
+            if (foundError) {
+                request.setAttribute("CHECKOUT_ERROR", errors);
+//                errors.getInvalidQuantityError()
             } else {
-                url = siteMaps.getProperty(MyApplicationConstain.ErrorsPage.ERROR_PAGE);
+                //get orderId
+                HttpSession session = request.getSession();
+                //get cart
+                CartObject cart = (CartObject) session.getAttribute("CART");
+                if (cart == null) {
+                    return;
+                }
+                String orderId = orderDetailDAO.checkout(cart, name, address, errors);
+                
+                if (orderId != null) {
+                    session.setAttribute("CART", null);
+                    request.setAttribute("NAME", name);
+                    request.setAttribute("ADDRESS", address);
+                    url = siteMaps.getProperty(MyApplicationConstain.CheckoutFeature.BILL_CONTROLLER)
+                            + "?orderId=" + orderId;
+                }
             }
-            
-            request.setAttribute("NAME", name);
-            request.setAttribute("ADDRESS", address);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (NamingException ex) {
+            log("AddItemToCartServlet_Naming: " + ex.getMessage());
+        } catch (SQLException ex) {
+            log("AddItemToCartServlet_SQL: " + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            log("AddItemToCartServlet_ClassNotFound: " + ex.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }
-        
+
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
